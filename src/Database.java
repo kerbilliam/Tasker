@@ -108,9 +108,9 @@ public class Database {
 
     // TASK TABLE METHODS
 
-    public static void addTask(String task_name) {
-        String sql = "INSERT INTO "+taskTableName+" (task) " +
-                "VALUES ('" + task_name + "');";
+    public static void addTask(String task_name, String assigned_users, String status, String priority) {
+        String sql = "INSERT INTO "+taskTableName+" (task, assigned_users, status, priority) " +
+                "VALUES ('" + task_name + "', '"+assigned_users+"', '"+status+"', '"+priority+"');";
         runSQLStatement(sql);
         System.out.println("Task: " + task_name + " has been successfully added.");
     }
