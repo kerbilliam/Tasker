@@ -1,5 +1,6 @@
 import java.net.ConnectException;
 import java.sql.*;
+import java.util.HashMap;
 
 public class Database {
 
@@ -108,9 +109,9 @@ public class Database {
 
     // TASK TABLE METHODS
 
-    public static void addTask(String task_name, String assigned_users, String status, String priority) {
-        String sql = "INSERT INTO "+taskTableName+" (task, assigned_users, status, priority) " +
-                "VALUES ('" + task_name + "', '"+assigned_users+"', '"+status+"', '"+priority+"');";
+    public static void addTask(String task_name, String due_date, String assigned_users, String status, String priority) {
+        String sql = "INSERT INTO "+taskTableName+" (task, due, assigned_users, status, priority) " +
+                "VALUES ('" + task_name + "', '"+due_date+"', '"+assigned_users+"', '"+status+"', '"+priority+"');";
         runSQLStatement(sql);
         System.out.println("Task: " + task_name + " has been successfully added.");
     }
@@ -161,7 +162,7 @@ public class Database {
         System.out.println(username + " has been deleted successfully.");
     }
 
-    public static void printFormattedUserTable(ResultSet rs) {
+    private static void printFormattedUserTable(ResultSet rs) {
         try {
             System.out.printf("%-15s%-25s%-25s%s%n",
                     "Username",
@@ -179,6 +180,16 @@ public class Database {
             }
         } catch(SQLException e) {
             printSQLError(e);
+        }
+    }
+    
+    public static HashMap<String, String> getAccounts() {
+        HashMap<String, String> map = new HashMap<>();
+        // get users ResultSet
+        while (rs.next()) {
+            String username = rs.getString("username");
+            String password = rs.getString("password");
+            map.put(username, password);
         }
     }
 
