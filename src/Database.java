@@ -1,13 +1,21 @@
 import java.net.ConnectException;
 import java.sql.*;
+import java.util.HashMap;
 
 public class Database {
 
     private static final String databaseURL = "jdbc:sqlite:database.db";
     private static final String userTableName = "users";
     private static final String taskTableName = "tasks";
+    private static Connection connection;
+    private static ResultSet resultSet;
+    private static Statement statement;
+    private static PreparedStatement preparedStatement;
+
 
     public static void init(){
+        connect();
+        makeStatement();
         String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (" +
                 "id INTEGER PRIMARY KEY, " +
                 "username TEXT NOT NULL UNIQUE, " +
@@ -17,9 +25,7 @@ public class Database {
                 "created DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 
-        System.out.println("Creating "+userTableName+" table...");
-        runSQLStatement(sql);
-        System.out.println("Users table created successfully.");
+        runStatement(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS "+taskTableName+" (" +
                 "id INTEGER PRIMARY KEY, " +
@@ -31,17 +37,58 @@ public class Database {
                 "created DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 
-        System.out.println("Creating tasks table...");
-        runSQLStatement(sql);
-        System.out.println("Tasks table created successfully.");
+        runStatement(sql);
+        
+        closeCONN();
+        closeSTMT();
 
-        System.out.println("Database initialized successfully.");
+       
+        
+/*         connect();
+        String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (?, ?, ?, ?, ?, ?);";
+        createPreparedStatment(sql);
+        try {
+            preparedStatement.setString(1, "id INTEGER PRIMARY KEY");
+            preparedStatement.setString(2, "username TEXT NOT NULL UNIQUE");
+            preparedStatement.setString(3, "first_name TEXT");
+            preparedStatement.setString(4, "last_name TEXT");
+            preparedStatement.setString(5, "password TEXT NOT NULL");
+            preparedStatement.setString(6, "created DATETIME DEFAULT CURRENT_TIMESTAMP");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLError(e);
+            System.out.println("Error when making users table");
+        }
+        
+        sql = "CREATE TABLE IF NOT EXISTS "+taskTableName+" (?, ?, ?, ?, ?, ?, ?);";
+        createPreparedStatment(sql);
+        try {
+        preparedStatement.setString(1, "id INTEGER PRIMARY KEY");
+        preparedStatement.setString(2, "task TEXT NOT NULL");
+        preparedStatement.setString(3, "due DATETIME");
+        preparedStatement.setString(4, "assigned_users TEXT");
+        preparedStatement.setString(5, "status TEXT");
+        preparedStatement.setString(6, "priority TEXT");
+        preparedStatement.setString(7, "created DATETIME DEFAULT CURRENT_TIMESTAMP");
+        preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLError(e);
+            System.out.println("Error when making tasks table");
+        } 
+        */
     }
 
     // If you want to include multiple fields, separate them with a comma.
     public static void printTable(String table_name, String field, String fieldValue) {
-        String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = '"+fieldValue+"';";
-        outputTable(runSQLQuery(sql), table_name);
+        // String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = '"+fieldValue+"';";
+        // outputTable(runSQLQuery(sql), table_name);
+        String[] input = {table_name, field, fieldValue};
+        String sql = "SELECT * FROM ? WHERE ? = '?';";
+        connect();
+        createPreparedStatment(sql);
+        prepareStrings(input);
+        closeCONN();
+        closePSTMT();
     }
 
     public static void printTable(String table_name) {
@@ -108,9 +155,9 @@ public class Database {
 
     // TASK TABLE METHODS
 
-    public static void addTask(String task_name, String assigned_users, String status, String priority) {
-        String sql = "INSERT INTO "+taskTableName+" (task, assigned_users, status, priority) " +
-                "VALUES ('" + task_name + "', '"+assigned_users+"', '"+status+"', '"+priority+"');";
+    public static void addTask(String task_name, String due_date, String assigned_users, String status, String priority) {
+        String sql = "INSERT INTO "+taskTableName+" (task, due, assigned_users, status, priority) " +
+                "VALUES ('" + task_name + "', '"+due_date+"', '"+assigned_users+"', '"+status+"', '"+priority+"');";
         runSQLStatement(sql);
         System.out.println("Task: " + task_name + " has been successfully added.");
     }
@@ -161,7 +208,7 @@ public class Database {
         System.out.println(username + " has been deleted successfully.");
     }
 
-    public static void printFormattedUserTable(ResultSet rs) {
+    private static void printFormattedUserTable(ResultSet rs) {
         try {
             System.out.printf("%-15s%-25s%-25s%s%n",
                     "Username",
@@ -179,6 +226,16 @@ public class Database {
             }
         } catch(SQLException e) {
             printSQLError(e);
+        }
+    }
+    
+    public static HashMap<String, String> getAccounts() {
+        HashMap<String, String> map = new HashMap<>();
+        // get users ResultSet
+        while (rs.next()) {
+            String username = rs.getString("username");
+            String password = rs.getString("password");
+            map.put(username, password);
         }
     }
 
@@ -206,6 +263,95 @@ public class Database {
             printSQLError(e);
         }
         return null;
+    }
+    
+    private static void connect() {
+        try {
+            connection = DriverManager.getConnection(databaseURL);
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+
+    private static void makeStatement() {
+        try {
+            if (connection != null) {
+                statement = connection.createStatement();
+            }
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+    
+    private static void runStatement(String sql) {
+        try {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+    
+    private static void createPreparedStatment(String sql) {
+        try {
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+            }
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+
+    private static void prepareStrings(String[] statements) {
+        int length = statements.length;
+        try {
+            for (int i = 1; i <= length; i++) {
+                preparedStatement.setString(i, statements[i - 1]);
+            }
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+
+    private static void getRS(String sql) {
+        try {
+            if (connection != null) {
+            resultSet = statement.executeQuery(sql);
+            }
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+    
+    private static void closeCONN() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+
+    private static void closeSTMT() {
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+
+    private static void closePSTMT() {
+        try {
+            preparedStatement.close();
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+   
+    private static void closeRS() {
+        try {
+            resultSet.close();
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
     }
 
     public static void printSQLError(SQLException e) {
