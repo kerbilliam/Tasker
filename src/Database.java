@@ -1,20 +1,40 @@
 import java.net.ConnectException;
 import java.sql.*;
+import DB.*;
 import java.util.HashMap;
 
 public class Database {
-
-    private static final String databaseURL = "jdbc:sqlite:database.db";
     private static final String userTableName = "users";
     private static final String taskTableName = "tasks";
-    private static Connection connection;
-    private static ResultSet resultSet;
-    private static Statement statement;
-    private static PreparedStatement preparedStatement;
-
 
     public static void init(){
-        connect();
+        Conn connection = new Conn();
+        STMT statement = new STMT(connection.getConnection());
+        String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (" +
+                "id INTEGER PRIMARY KEY, " +
+                "username TEXT NOT NULL UNIQUE, " +
+                "first_name TEXT, " +
+                "last_name TEXT, " +
+                "password TEXT NOT NULL, " +
+                "created DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                ");";
+        statement.executeUpdate(sql);
+
+        sql = "CREATE TABLE IF NOT EXISTS "+taskTableName+" (" +
+                "id INTEGER PRIMARY KEY, " +
+                "task TEXT NOT NULL, " +
+                "due DATETIME, " +
+                "assigned_users TEXT, " +
+                "status TEXT, " +
+                "priority TEXT, " +
+                "created DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                ");";
+        statement.executeUpdate(sql);
+
+        connection.close();
+        statement.close();
+
+/*         connect();
         makeStatement();
         String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (" +
                 "id INTEGER PRIMARY KEY, " +
@@ -41,7 +61,7 @@ public class Database {
         
         closeCONN();
         closeSTMT();
-
+ */
        
         
 /*         connect();
@@ -78,32 +98,40 @@ public class Database {
         */
     }
 
-    // If you want to include multiple fields, separate them with a comma.
     public static void printTable(String table_name, String field, String fieldValue) {
-        // String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = '"+fieldValue+"';";
-        // outputTable(runSQLQuery(sql), table_name);
         String[] input = {table_name, field, fieldValue};
         String sql = "SELECT * FROM ? WHERE ? = '?';";
         connect();
-        createPreparedStatment(sql);
+        createPreparedStatement(sql);
         prepareStrings(input);
+        makeResultSet();
+        outputTable(table_name);
         closeCONN();
         closePSTMT();
+        closeRS();
     }
 
     public static void printTable(String table_name) {
         if (table_name.equals("tasks") || table_name.equals("users")){
-            String sql = "SELECT * FROM "+table_name+";";
-            outputTable(runSQLQuery(sql), table_name);
+            String[] input = {table_name};
+            String sql = "SELECT * FROM ?;";
+            connect();
+            createPreparedStatement(sql);
+            prepareStrings(input);
+            makeResultSet();
+            outputTable(table_name);
         } else {
             System.out.println("Please choose 'tasks' or 'users'");
         }
 
+        closeCONN();
+        closePSTMT();
+        closeRS();
     }
 
 
 
-    private static void printFormatedTaskTable(ResultSet rs) {
+    private static void printFormatedTaskTable() {
         try {
             System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
                     "Task",
@@ -113,14 +141,14 @@ public class Database {
                     "Priority",
                     "Created"
             );
-            while (rs.next()) {
+            while (resultSet.next()) {
                 System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
-                        rs.getString("task"),
-                        rs.getDate("due"),
-                        rs.getString("assigned_users"),
-                        rs.getString("status"),
-                        rs.getString("priority"),
-                        rs.getDate("created")
+                        resultSet.getString("task"),
+                        resultSet.getDate("due"),
+                        resultSet.getString("assigned_users"),
+                        resultSet.getString("status"),
+                        resultSet.getString("priority"),
+                        resultSet.getDate("created")
                 );
             }
         } catch(SQLException e) {
@@ -128,13 +156,16 @@ public class Database {
         }
     }
 
-    private static void outputTable(Object[] result, String table) {
-        if (result != null) {
-            Connection conn = (Connection) result [0];
-            Statement stmt = (Statement) result[1];
-            ResultSet query = (ResultSet) result[2];
+    private static void outputTable(String tableName) {
+        if (resultSet != null) {
+            if (tableName.equals("tasks")) {
+                printFormatedTaskTable();
+            } else if (tableName.equals("users")) {
+                printFormattedUserTable();
+            }
 
-            if (query != null) {
+
+/*             if (query != null) {
                 if (table.equals("tasks")) {
                     printFormatedTaskTable(query);
                 } else if (table.equals("users")) {
@@ -149,7 +180,7 @@ public class Database {
                 } catch (SQLException e ){
                     printSQLError(e);
                 }
-            }
+            } */
         }
     }
 
@@ -208,7 +239,7 @@ public class Database {
         System.out.println(username + " has been deleted successfully.");
     }
 
-    private static void printFormattedUserTable(ResultSet rs) {
+    private static void printFormattedUserTable() {
         try {
             System.out.printf("%-15s%-25s%-25s%s%n",
                     "Username",
@@ -216,12 +247,12 @@ public class Database {
                     "Last",
                     "Created"
             );
-            while (rs.next()) {
+            while (resultSet.next()) {
                 System.out.printf("%-15s%-25s%-25s%s%n",
-                        rs.getString("username"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getDate("created")
+                        resultSet.getString("username"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getDate("created")
                 );
             }
         } catch(SQLException e) {
@@ -229,15 +260,15 @@ public class Database {
         }
     }
     
-    public static HashMap<String, String> getAccounts() {
-        HashMap<String, String> map = new HashMap<>();
-        // get users ResultSet
-        while (rs.next()) {
-            String username = rs.getString("username");
-            String password = rs.getString("password");
-            map.put(username, password);
-        }
-    }
+//    public static HashMap<String, String> getAccounts() {
+//        HashMap<String, String> map = new HashMap<>();
+//        // get users ResultSet
+//        while (resultSet.next()) {
+//            String username = resultSet.getString("username");
+//            String password = resultSet.getString("password");
+//            map.put(username, password);
+//        }
+//    }
 
     private static void runSQLStatement(String sql) {
         try (Connection conn = DriverManager.getConnection(databaseURL)) {
@@ -267,13 +298,26 @@ public class Database {
     
     private static void connect() {
         try {
-            connection = DriverManager.getConnection(databaseURL);
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(databaseURL);
+            }
+        } catch (SQLException e) {
+            printSQLError(e);
+        }
+    }
+
+    private static void checkConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(databaseURL);
+            }
         } catch (SQLException e) {
             printSQLError(e);
         }
     }
 
     private static void makeStatement() {
+        checkConnection();
         try {
             if (connection != null) {
                 statement = connection.createStatement();
@@ -291,7 +335,8 @@ public class Database {
         }
     }
     
-    private static void createPreparedStatment(String sql) {
+    private static void createPreparedStatement(String sql) {
+        checkConnection();
         try {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
@@ -312,10 +357,10 @@ public class Database {
         }
     }
 
-    private static void getRS(String sql) {
+    private static void makeResultSet() {
         try {
             if (connection != null) {
-            resultSet = statement.executeQuery(sql);
+            resultSet = preparedStatement.executeQuery();
             }
         } catch (SQLException e) {
             printSQLError(e);
