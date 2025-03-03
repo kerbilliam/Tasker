@@ -1,3 +1,4 @@
+package Colors;
 /* Uses the ANSI color code
  * Only compatible with terminals that support ANSI escape sequences
  * 

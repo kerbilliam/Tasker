@@ -185,17 +185,29 @@ public class Database {
 
     // USER TABLE METHODS
 
-    public static void addUser(String username, String password) {
-        String sql = "INSERT INTO "+userTableName+" (username, password) " +
-                "VALUES ('"+username+"', '"+password+"');";
-        runSQLStatement(sql);
+    public static void addUser(String username, String password, String first_name, String last_name) {
+        String sql = "INSERT INTO "+userTableName+" (username, password, first_name, last_name) VALUES (?, ?, ?, ?);";
+        String[] values = {username, password, first_name, last_name};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
+
         System.out.println("New user: [" + username + "] created.");
     }
 
     public static void updateUser(String username, String field, String value) {
-        String sql = "UPDATE "+userTableName+" SET "+field+" = " +
-                "'"+value+"' WHERE username = '"+username+"';";
-        runSQLStatement(sql);
+        String sql = "UPDATE "+userTableName+" SET "+field+" = ? WHERE username = ?;";
+        String[] values = {value, username};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
+        
         System.out.println(field + " updated to ["+value+"] for user: " + username);
     }
 
