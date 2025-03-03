@@ -2,6 +2,12 @@ package CLI;
 import DB.Database;
 
 public class Flags {
+    public static Arguments table() {
+        String name = "table";
+        String[] ali = {"--table", "--table-name", "-T"};
+        String desc = "table name";
+        return new Flag(name, ali, desc);
+    }
     public static Arguments task() {
         String name = Database.TASK_NAME;
         String[] ali = {"--name", "--title", "-n", "-t"};
@@ -19,7 +25,7 @@ public class Flags {
     
     public static Arguments assignedUsers() {
         String name = Database.ASSIGNED_USER;
-        String[] ali = {"--user-assign", "-ua"};
+        String[] ali = {"--user-assign", "-u"};
         String desc = "Username to assign to task. User must already exists.";
         return new Flag(name, ali, desc);
     }
@@ -40,7 +46,7 @@ public class Flags {
     
     public static Arguments username() {
         String name = Database.USERNAME;
-        String[] ali = {"--username", "-u"};
+        String[] ali = {"--username", "-U"};
         String desc = "Set username: required for new user";
         return new Flag(name, ali, desc);
     }

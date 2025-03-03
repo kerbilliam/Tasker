@@ -46,6 +46,7 @@ public class Parser {
 
         if (args.length == 0) {
             HelpOutput.printHelp();
+            System.exit(1);
         }
         
         for (Arguments command : commands) {
