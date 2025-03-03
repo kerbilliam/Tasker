@@ -31,71 +31,8 @@ public class Database {
                 ");";
         statement.executeUpdate(sql);
 
-        connection.close();
         statement.close();
-
-/*         connect();
-        makeStatement();
-        String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (" +
-                "id INTEGER PRIMARY KEY, " +
-                "username TEXT NOT NULL UNIQUE, " +
-                "first_name TEXT, " +
-                "last_name TEXT, " +
-                "password TEXT NOT NULL, " +
-                "created DATETIME DEFAULT CURRENT_TIMESTAMP" +
-                ");";
-
-        runStatement(sql);
-
-        sql = "CREATE TABLE IF NOT EXISTS "+taskTableName+" (" +
-                "id INTEGER PRIMARY KEY, " +
-                "task TEXT NOT NULL, " +
-                "due DATETIME, " +
-                "assigned_users TEXT, " +
-                "status TEXT, " +
-                "priority TEXT, " +
-                "created DATETIME DEFAULT CURRENT_TIMESTAMP" +
-                ");";
-
-        runStatement(sql);
-        
-        closeCONN();
-        closeSTMT();
- */
-       
-        
-/*         connect();
-        String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (?, ?, ?, ?, ?, ?);";
-        createPreparedStatment(sql);
-        try {
-            preparedStatement.setString(1, "id INTEGER PRIMARY KEY");
-            preparedStatement.setString(2, "username TEXT NOT NULL UNIQUE");
-            preparedStatement.setString(3, "first_name TEXT");
-            preparedStatement.setString(4, "last_name TEXT");
-            preparedStatement.setString(5, "password TEXT NOT NULL");
-            preparedStatement.setString(6, "created DATETIME DEFAULT CURRENT_TIMESTAMP");
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            printSQLError(e);
-            System.out.println("Error when making users table");
-        }
-        
-        sql = "CREATE TABLE IF NOT EXISTS "+taskTableName+" (?, ?, ?, ?, ?, ?, ?);";
-        createPreparedStatment(sql);
-        try {
-        preparedStatement.setString(1, "id INTEGER PRIMARY KEY");
-        preparedStatement.setString(2, "task TEXT NOT NULL");
-        preparedStatement.setString(3, "due DATETIME");
-        preparedStatement.setString(4, "assigned_users TEXT");
-        preparedStatement.setString(5, "status TEXT");
-        preparedStatement.setString(6, "priority TEXT");
-        preparedStatement.setString(7, "created DATETIME DEFAULT CURRENT_TIMESTAMP");
-        preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            printSQLError(e);
-            System.out.println("Error when making tasks table");
-        } 
-        */
+        connection.close();
     }
 
     public static void printTable(String table_name, String field, String fieldValue) {
@@ -115,14 +52,6 @@ public class Database {
         resultSet.close();
         pstmt.close();
         conn.close();
-/*         connect();
-        createPreparedStatement(sql);
-        prepareStrings(input);
-        makeResultSet();
-        outputTable(table_name);
-        closeCONN();
-        closePSTMT();
-        closeRS(); */
     }
 
     public static void printTable(String table_name) {
@@ -140,22 +69,6 @@ public class Database {
         resultSet.close();
         pstmt.close();
         conn.close();
-
-/*         if (table_name.equals("tasks") || table_name.equals("users")){
-            String[] input = {table_name};
-            String sql = "SELECT * FROM ?;";
-            connect();
-            createPreparedStatement(sql);
-            prepareStrings(input);
-            makeResultSet();
-            outputTable(table_name);
-        } else {
-            System.out.println("Please choose 'tasks' or 'users'");
-        }
-
-        closeCONN();
-        closePSTMT();
-        closeRS(); */
     }
 
 
@@ -183,36 +96,32 @@ public class Database {
             }
         } catch(SQLException e) {
             printSQLError(e);
+            System.exit(1);
         }
     }
 
-    private static void outputTable(String tableName) {
-        if (resultSet != null) {
-            if (tableName.equals("tasks")) {
-                printFormatedTaskTable();
-            } else if (tableName.equals("users")) {
-                printFormattedUserTable();
+    private static void printFormattedUserTable(ResultSet rs) {
+        try {
+            ResultSet resultSet = rs;
+            System.out.printf("%-15s%-25s%-25s%s%n",
+                    "Username",
+                    "First",
+                    "Last",
+                    "Created"
+            );
+            while (resultSet.next()) {
+                System.out.printf("%-15s%-25s%-25s%s%n",
+                        resultSet.getString("username"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getDate("created")
+                );
             }
-
-
-/*             if (query != null) {
-                if (table.equals("tasks")) {
-                    printFormatedTaskTable(query);
-                } else if (table.equals("users")) {
-                    printFormattedUserTable(query);
-                }
-
-
-                try {
-                    query.close();
-                    stmt.close();
-                    conn.close();
-                } catch (SQLException e ){
-                    printSQLError(e);
-                }
-            } */
+        } catch(SQLException e) {
+            printSQLError(e);
         }
     }
+
 
     // TASK TABLE METHODS
 
@@ -269,27 +178,6 @@ public class Database {
         System.out.println(username + " has been deleted successfully.");
     }
 
-    private static void printFormattedUserTable(ResultSet rs) {
-        try {
-            ResultSet resultSet = rs;
-            System.out.printf("%-15s%-25s%-25s%s%n",
-                    "Username",
-                    "First",
-                    "Last",
-                    "Created"
-            );
-            while (resultSet.next()) {
-                System.out.printf("%-15s%-25s%-25s%s%n",
-                        resultSet.getString("username"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getDate("created")
-                );
-            }
-        } catch(SQLException e) {
-            printSQLError(e);
-        }
-    }
     
 //    public static HashMap<String, String> getAccounts() {
 //        HashMap<String, String> map = new HashMap<>();
