@@ -133,6 +133,10 @@ public class Database {
         Conn conn = new Conn();
         PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
         pstmt.setNrunStatement(values);
+        
+        pstmt.close();
+        conn.close();
+
         System.out.println("Task: " + task_name + " has been successfully added.");
     }
 
@@ -141,9 +145,15 @@ public class Database {
             System.out.print("use assignUser to assign users to a task");
             System.exit(1);
         }
-        String sql = "UPDATE "+taskTableName+" SET "+field+" = " +
-                "'"+value+"' WHERE "+where+" = '"+isThis+"';";
-        runSQLStatement(sql);
+        String sql = "UPDATE "+taskTableName+" SET "+field+" = ? WHERE "+where+" = ?;";
+        String[] values = {field, isThis};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+        
+        pstmt.close();
+        conn.close();
+        
         System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+isThis+"'");
     }
 
