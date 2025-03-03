@@ -6,8 +6,10 @@ public class RS {
 
     private void createResultSet(PreparedStatement preparedStatement) {
         try {
-            resultSet = preparedStatement.executeQuery();
-            System.out.println("ResultSet Query executed successfully!");
+            if (preparedStatement != null) {
+             resultSet = preparedStatement.executeQuery();
+            // System.out.println("ResultSet Query executed successfully!");
+            }
         } catch (SQLException e) {
             System.err.println("SQL Exception when creating ResultSet or executing Query");
             System.err.println(e);
@@ -18,7 +20,7 @@ public class RS {
     private void createResultSet(Statement statement, String sql) {
         try {
             resultSet = statement.executeQuery(sql);
-            System.out.println("ResultSet Query executed successfully!");
+            // System.out.println("ResultSet Query executed successfully!");
         } catch (SQLException e) {
             System.err.println("SQL Exception when creating ResultSet or executing Query");
             System.err.println(e);
@@ -33,7 +35,7 @@ public class RS {
     public void close() {
         try {
             resultSet.close();
-            System.out.println("ResultSet Closed Successfully");
+            // System.out.println("ResultSet Closed Successfully");
         } catch (SQLException e) {
             System.err.println("SQL Exception when closing ResultSet");
             System.err.println(e);

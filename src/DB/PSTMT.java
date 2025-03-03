@@ -8,7 +8,7 @@ public class PSTMT {
         try {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
-                System.out.println("Prepared Statement created successfully!");
+                // System.out.println("Prepared Statement created successfully!");
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception when creating Preapared Statement");
@@ -23,9 +23,9 @@ public class PSTMT {
             for (int i = 1; i <= length; i++) {
                 preparedStatement.setString(i, input[i - 1]);
             }
-            System.out.println("Prepared statement successfully");
+            // System.out.println("Prepared statement successfully");
             preparedStatement.executeUpdate();
-            System.out.println("Prepared statement executed successfully");
+            // System.out.println("Prepared statement executed successfully");
         } catch (SQLException e) {
             System.err.println("SQL Exception when setting or executing Preapared Statement");
             System.err.println(e);
@@ -39,7 +39,7 @@ public class PSTMT {
             for (int i = 1; i <= length; i++) {
                 preparedStatement.setString(i, input[i - 1]);
             }
-            System.out.println("Prepared set successfully");
+            // System.out.println("Prepared set successfully");
         } catch (SQLException e) {
             System.err.println("SQL Exception when setting Preapared Statement");
             System.err.println(e);
@@ -54,7 +54,7 @@ public class PSTMT {
     public void close() {
         try {
             preparedStatement.close();
-            System.out.println("Prepared Statement closed successfully");
+            // System.out.println("Prepared Statement closed successfully");
         } catch (SQLException e) {
             System.err.println("SQL Exception when closing Prepared Statement");
             System.err.println(e);
