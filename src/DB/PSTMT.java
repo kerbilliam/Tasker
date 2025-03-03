@@ -23,7 +23,7 @@ public class PSTMT {
             for (int i = 1; i <= length; i++) {
                 preparedStatement.setString(i, input[i - 1]);
             }
-            System.out.println("Prepared set successfully");
+            System.out.println("Prepared statement successfully");
             preparedStatement.executeUpdate();
             System.out.println("Prepared statement executed successfully");
         } catch (SQLException e) {

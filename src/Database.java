@@ -37,7 +37,7 @@ public class Database {
 
     public static void printTable(String table_name, String field, String fieldValue) {
         String[] input = {fieldValue};
-        String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = '?';";
+        String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = ?;";
         Conn conn = new Conn();
         PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
         pstmt.setStatement(input);
@@ -124,15 +124,18 @@ public class Database {
 
 
     // TASK TABLE METHODS
+    // When updating time, it has to be in ISO 8601 format: 'YYYY-MM-DD HH:MM:SS'
 
     public static void addTask(String task_name, String due_date, String assigned_users, String status, String priority) {
         String sql = "INSERT INTO "+taskTableName+" (task, due, assigned_users, status, priority) " +
-                "VALUES ('" + task_name + "', '"+due_date+"', '"+assigned_users+"', '"+status+"', '"+priority+"');";
-        runSQLStatement(sql);
+                "VALUES (?, ?, ?, ?, ?);";
+        String[] values = {task_name, due_date, assigned_users, status, priority};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
         System.out.println("Task: " + task_name + " has been successfully added.");
     }
 
-    // When updating time, it has to be in ISO 8601 format: 'YYYY-MM-DD HH:MM:SS'
     public static void updateTasks(String where, String isThis, String field, String value) {
         if (field.equals("assigned_users")) {
             System.out.print("use assignUser to assign users to a task");
