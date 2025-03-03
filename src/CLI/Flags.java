@@ -19,7 +19,7 @@ public class Flags {
     public static Arguments due() {
         String name = Database.DUE_DATE;
         String[] ali = {"--due", "--due-date", "--deadline", "-d"};
-        String desc = "Task Due Date: must be in 'YYYY:MM:DD: HH:MM:SS' format";
+        String desc = "Task Due Date: must be in 'YYYY-MM-DD: HH:MM:SS' format";
         return new Flag(name, ali ,desc);
     }
     
@@ -73,7 +73,6 @@ public class Flags {
     }
 
     public static Arguments[] getAll() {
-        Arguments[] list = {task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password()};
-        return list;
+        return new Arguments[]{table(), task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password()};
     }
 }

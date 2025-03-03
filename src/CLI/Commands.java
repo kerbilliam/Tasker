@@ -66,7 +66,6 @@ public class Commands {
     }
 
     public static Arguments[] getAll() {
-        Arguments[] list = {init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser()};
-        return list;
+        return new Arguments[]{init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser()};
     }
 }
