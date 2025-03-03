@@ -171,8 +171,15 @@ public class Database {
     }
 
     public static void deleteTask(String task_name) {
-        String sql = "DELETE FROM "+taskTableName+" WHERE task = '"+task_name+"';";
-        runSQLStatement(sql);
+        String sql = "DELETE FROM "+taskTableName+" WHERE task = ?;";
+        String[] values = {task_name};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
+        
         System.out.println(task_name + " successfully deleted.");
     }
 
