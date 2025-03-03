@@ -1,6 +1,8 @@
 package CLI;
 import java.util.HashMap;
 
+import DB.Database;
+
 public class Parser {
     private HashMap<String, String> map = new HashMap<>();
     // Table Parameters
@@ -23,18 +25,19 @@ public class Parser {
     private String command = null;
 
     public Parser() {
-        map.put("task", task);
-        map.put("due", due);
-        map.put("assigned_users", assigned_users);
-        map.put("status", status);
-        map.put("priority", priority);
+        map.put(Database.TASK_NAME, task);
+        map.put(Database.DUE_DATE, due);
+        map.put(Database.ASSIGNED_USER, assigned_users);
+        map.put(Database.STATUS, status);
+        map.put(Database.PRIORITY, priority);
 
-        map.put("username", username);
-        map.put("first_name", first_name);
-        map.put("last_name", last_name);
-        map.put("password", password);
+        map.put(Database.USERNAME, username);
+        map.put(Database.FIRST_NAME, first_name);
+        map.put(Database.LAST_NAME, last_name);
+        map.put(Database.PASSWORD, password);
         
         map.put("command", command);
+        map.put("table", table);
     }
     
     public void parse(String[] args) {
@@ -42,7 +45,7 @@ public class Parser {
         Arguments[] commands = Commands.getAll();
 
         if (args.length == 0) {
-            // print help
+            HelpOutput.printHelp();
         }
         
         for (Arguments command : commands) {

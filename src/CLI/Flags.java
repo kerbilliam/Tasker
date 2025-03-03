@@ -1,8 +1,9 @@
 package CLI;
+import DB.Database;
 
 public class Flags {
     public static Arguments task() {
-        String name = "task";
+        String name = Database.TASK_NAME;
         String[] ali = {"--name", "--title", "-n", "-t"};
         String desc = "Task title";
         String[] assoc = {"add-task"};
