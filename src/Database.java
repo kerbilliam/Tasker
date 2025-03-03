@@ -46,6 +46,8 @@ public class Database {
             printFormattedTaskTable(resultSet.getResultSet());
         } else if (table_name.equals("users")) {
             printFormattedUserTable(resultSet.getResultSet());
+        } else {
+            System.out.println("P;ease choose either 'tasks' or 'users'");
         }
         
         resultSet.close();
@@ -63,6 +65,8 @@ public class Database {
             printFormattedTaskTable(resultSet.getResultSet());
         } else if (table_name.equals("users")) {
             printFormattedUserTable(resultSet.getResultSet());
+        } else {
+            System.out.println("Please choose either 'tasks' or 'users'");
         }
         
         resultSet.close();
