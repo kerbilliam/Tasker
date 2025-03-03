@@ -228,13 +228,11 @@ public class Database {
         Conn conn = new Conn();
         STMT stmt = new STMT(conn.getConnection());
         RS resultSet = new RS(stmt.getStatement(), sql);
-        ResultSet rs = resultSet.getResultSet();
         try {
-            while (rs.next()) {
-                String username = rs.getString("username");
-                String password = rs.getString("password");
+            while (resultSet.getResultSet().next()) {
+                String username = resultSet.getResultSet().getString("username");
+                String password = resultSet.getResultSet().getString("password");
                 map.put(username, password);
-                rs.close();
                 resultSet.close();
                 stmt.close();
                 conn.close();
