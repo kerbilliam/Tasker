@@ -1,6 +1,8 @@
 package CLI;
+import java.util.HashMap;
 
 public class Parser {
+    private HashMap<String, String> map;
     // Task Parameters
     private String task = null;
     private String due = "2999:01:01 00:00:00";
@@ -15,10 +17,19 @@ public class Parser {
     private String password = null;
 
 
-    public Parser(String[] args) {
-        Arguments[] flags = Flags.getAll();
-        for (int i = 0; i < args.length; i++) {
-            
-        }
+    public Parser() {
+        map.put("task", task);
+        map.put("due", due);
+        map.put("assigned_users", assigned_users);
+        map.put("status", status);
+        map.put("priority", priority);
+        map.put("username", username);
+        map.put("first_name", first_name);
+        map.put("last_name", last_name);
+        map.put("password", password);
+    }
+    
+    public HashMap<String, String> getMap() {
+        return map;
     }
 }
