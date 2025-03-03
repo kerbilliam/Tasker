@@ -29,4 +29,9 @@ public class Commands {
         String desc = "Updates existing task with specified field values";
         return new Command(name, ali, desc);
     }
+
+    public static Arguments[] getAll() {
+        Arguments[] list = {init(), printTable(), addTask(), updateTask()};
+        return list;
+    }
 }

@@ -2,7 +2,7 @@ package CLI;
 
 public class Flag extends Command {
     private String[] associatedCommands;
-    private String value = null;
+    // private String value = null;
 
     public Flag(String name, String[] aliases, String[] associatedCommands, String description) {
         super(name, aliases, description);
@@ -13,12 +13,12 @@ public class Flag extends Command {
         return associatedCommands;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+    // public void setValue(String value) {
+        // this.value = value;
+    // }
 
-    public String getValue() {
-        return value;
-    }
+    // public String getValue() {
+        // return value;
+    // }
 
 }
