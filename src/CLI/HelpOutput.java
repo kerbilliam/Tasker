@@ -21,9 +21,12 @@ public class HelpOutput {
         System.out.println("FLAGS:");
         printSeparator(10);
         System.out.println(StrColor.RESET);
-        System.out.printf("%-20s%-30s%s\n", "Flag Aliases", "Description", "Used for");
+        // System.out.printf("%-20s%-30s%s\n", "Flag Aliases", "Description", "Used for");
+        System.out.printf("%-20s%-30s\n", "Flag Aliases", "Description");
         for (int i = 0; i < flags.length; i++) {
-            System.out.printf("%-20s%-30s%s\n", flags[i].getAlias().toString(), flags[i].getDescription(), ((Flag) flags[i]).getAssocCommands().toString());
+            // System.out.printf("%-20s%-30s%s\n", flags[i].getAlias().toString(), flags[i].getDescription(), ((Flag) flags[i]).getAssocCommands().toString());
+            System.out.printf("%-20s%-30s\n", flags[i].getAlias().toString(), flags[i].getDescription());
+
         }
     }
 
