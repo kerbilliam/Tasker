@@ -8,7 +8,7 @@ public class Conn {
     private void connect() {
         try {
             connection = DriverManager.getConnection(dbURL);
-            System.out.println("Connection established!");
+            // System.out.println("Connection established!");
         } catch (SQLException e) {
             System.err.println("SQL Exception thrown while attempting to connect to database.");
             System.err.println(e);
@@ -19,7 +19,7 @@ public class Conn {
     public void close() {
         try {
             connection.close();
-            System.out.println("Connection closed successfully!");
+            // System.out.println("Connection closed successfully!");
         } catch (SQLException e) {
             System.err.println("SQL Exception while closing connection!");
             System.err.println(e);
