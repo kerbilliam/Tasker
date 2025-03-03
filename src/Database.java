@@ -207,13 +207,20 @@ public class Database {
 
         pstmt.close();
         conn.close();
-        
+
         System.out.println(field + " updated to ["+value+"] for user: " + username);
     }
 
     public static void removeUser(String username) {
-        String sql = "DELETE FROM "+userTableName+" WHERE username = '"+username+"';";
-        runSQLStatement(sql);
+        String sql = "DELETE FROM "+userTableName+" WHERE username = ?;";
+        String[] values = {username};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
+        
         System.out.println(username + " has been deleted successfully.");
     }
 
