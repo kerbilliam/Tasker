@@ -39,6 +39,10 @@ public class STMT {
         }
     }
 
+    public Statement getStatement() {
+        return statement;
+    }
+
     public STMT(Connection connection) {
         createStatement(connection);
     }

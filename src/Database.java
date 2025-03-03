@@ -74,7 +74,6 @@ public class Database {
 
     private static void printFormattedTaskTable(ResultSet resultSet) {
         try {
-            ResultSet rs = resultSet;
             System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
                     "Task",
                     "Due",
@@ -85,12 +84,12 @@ public class Database {
             );
             while (resultSet.next()) {
                 System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
-                        rs.getString("task"),
-                        rs.getDate("due"),
-                        rs.getString("assigned_users"),
-                        rs.getString("status"),
-                        rs.getString("priority"),
-                        rs.getDate("created")
+                        resultSet.getString("task"),
+                        resultSet.getDate("due"),
+                        resultSet.getString("assigned_users"),
+                        resultSet.getString("status"),
+                        resultSet.getString("priority"),
+                        resultSet.getDate("created")
                 );
             }
         } catch(SQLException e) {
@@ -99,9 +98,8 @@ public class Database {
         }
     }
 
-    private static void printFormattedUserTable(ResultSet rs) {
+    private static void printFormattedUserTable(ResultSet resultSet) {
         try {
-            ResultSet resultSet = rs;
             System.out.printf("%-15s%-25s%-25s%s%n",
                     "Username",
                     "First",
@@ -224,15 +222,26 @@ public class Database {
     }
 
     
-//    public static HashMap<String, String> getAccounts() {
-//        HashMap<String, String> map = new HashMap<>();
-//        // get users ResultSet
-//        while (resultSet.next()) {
-//            String username = resultSet.getString("username");
-//            String password = resultSet.getString("password");
-//            map.put(username, password);
-//        }
-//    }
+    public static HashMap<String, String> getAccounts() {
+        HashMap<String, String> map = new HashMap<>();
+        String sql = "SELECT * FROM users";
+        Conn conn = new Conn();
+        STMT stmt = new STMT(conn.getConnection());
+        RS resultSet = new RS(stmt.getStatement(), sql);
+        ResultSet rs = resultSet.getResultSet();
+        try {
+            while (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                map.put(username, password);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception when getting user accounts");
+            System.err.println(e);
+            System.exit(1);
+        }
+        return map;
+    }
 
     public static void printSQLError(SQLException e) {
         System.out.println("Error: " + e.getMessage());
