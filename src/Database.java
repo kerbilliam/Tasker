@@ -153,14 +153,21 @@ public class Database {
         
         pstmt.close();
         conn.close();
-        
+
         System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+isThis+"'");
     }
 
-    public static void assignUser(String task_name, String username) {
-        String sql = "UPDATE "+taskTableName+" SET assigned_users = '"+username+"' " +
-                "WHERE task = '"+task_name+"';";
-        runSQLStatement(sql);
+    public static void assignUser(String where, String isThis, String username) {
+        String sql = "UPDATE "+taskTableName+" SET assigned_users = ? WHERE "+where+" = ?";
+        String[] values = {username, isThis};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
+
+       System.out.println(username + " Has been assigned to where " + where + " = " + isThis); 
     }
 
     public static void deleteTask(String task_name) {
