@@ -2,7 +2,7 @@ package CLI;
 import java.util.HashMap;
 
 public class Parser {
-    private HashMap<String, String> map;
+    private HashMap<String, String> map = new HashMap<>();
     // Task Parameters
     private String task = null;
     private String due = "2999:01:01 00:00:00";
@@ -27,6 +27,27 @@ public class Parser {
         map.put("first_name", first_name);
         map.put("last_name", last_name);
         map.put("password", password);
+    }
+    
+    public void parse(String[] args) {
+        Arguments[] flags = Flags.getAll();
+        for (int i = 1; i < args.length; i++) {
+//  maybe use a HashMap when looking through aliases for flags?
+            for (Arguments flag : flags) {
+
+                if (flag.isAlias(args[i])) {
+
+                    try {
+
+                        map.put(flag.getName(), args[i + 1]);
+
+                    } catch (IndexOutOfBoundsException e) {
+                        System.err.println("No value given for flag: " + args[i]);
+                        System.exit(1);
+                    }
+                }
+            }
+        }
     }
     
     public HashMap<String, String> getMap() {
