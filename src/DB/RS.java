@@ -4,9 +4,9 @@ import java.sql.*;
 public class RS {
     private ResultSet resultSet;
 
-    private void createResultSet(PreparedStatement preparedStatement, String sql) {
+    private void createResultSet(PreparedStatement preparedStatement) {
         try {
-            resultSet = preparedStatement.executeQuery(sql);
+            resultSet = preparedStatement.executeQuery();
             System.out.println("ResultSet Query executed successfully!");
         } catch (SQLException e) {
             System.err.println("SQL Exception when creating ResultSet or executing Query");
@@ -29,7 +29,7 @@ public class RS {
             System.exit(1);
         }
     }
-    public RS(PreparedStatement preparedStatement, String sql) {
-        createResultSet(preparedStatement, sql);
+    public RS(PreparedStatement preparedStatement) {
+        createResultSet(preparedStatement);
     }
 }

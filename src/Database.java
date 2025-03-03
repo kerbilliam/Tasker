@@ -99,20 +99,49 @@ public class Database {
     }
 
     public static void printTable(String table_name, String field, String fieldValue) {
-        String[] input = {table_name, field, fieldValue};
-        String sql = "SELECT * FROM ? WHERE ? = '?';";
-        connect();
+        String[] input = {fieldValue};
+        String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = '?';";
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setStatement(input);
+        RS resultSet = new RS(pstmt.getPreparedStatement());
+        
+        if (table_name.equals("tasks")) {
+            printFormattedTaskTable(resultSet.getResultSet());
+        } else if (table_name.equals("users")) {
+            printFormattedUserTable(resultSet.getResultSet());
+        }
+        
+        resultSet.close();
+        pstmt.close();
+        conn.close();
+/*         connect();
         createPreparedStatement(sql);
         prepareStrings(input);
         makeResultSet();
         outputTable(table_name);
         closeCONN();
         closePSTMT();
-        closeRS();
+        closeRS(); */
     }
 
     public static void printTable(String table_name) {
-        if (table_name.equals("tasks") || table_name.equals("users")){
+        String sql = "SELECT * FROM "+table_name+";";
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        RS resultSet = new RS(pstmt.getPreparedStatement());
+        
+        if (table_name.equals("tasks")) {
+            printFormattedTaskTable(resultSet.getResultSet());
+        } else if (table_name.equals("users")) {
+            printFormattedUserTable(resultSet.getResultSet());
+        }
+        
+        resultSet.close();
+        pstmt.close();
+        conn.close();
+
+/*         if (table_name.equals("tasks") || table_name.equals("users")){
             String[] input = {table_name};
             String sql = "SELECT * FROM ?;";
             connect();
@@ -126,13 +155,14 @@ public class Database {
 
         closeCONN();
         closePSTMT();
-        closeRS();
+        closeRS(); */
     }
 
 
 
-    private static void printFormatedTaskTable() {
+    private static void printFormattedTaskTable(ResultSet resultSet) {
         try {
+            ResultSet rs = resultSet;
             System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
                     "Task",
                     "Due",
@@ -143,12 +173,12 @@ public class Database {
             );
             while (resultSet.next()) {
                 System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
-                        resultSet.getString("task"),
-                        resultSet.getDate("due"),
-                        resultSet.getString("assigned_users"),
-                        resultSet.getString("status"),
-                        resultSet.getString("priority"),
-                        resultSet.getDate("created")
+                        rs.getString("task"),
+                        rs.getDate("due"),
+                        rs.getString("assigned_users"),
+                        rs.getString("status"),
+                        rs.getString("priority"),
+                        rs.getDate("created")
                 );
             }
         } catch(SQLException e) {
@@ -239,8 +269,9 @@ public class Database {
         System.out.println(username + " has been deleted successfully.");
     }
 
-    private static void printFormattedUserTable() {
+    private static void printFormattedUserTable(ResultSet rs) {
         try {
+            ResultSet resultSet = rs;
             System.out.printf("%-15s%-25s%-25s%s%n",
                     "Username",
                     "First",
