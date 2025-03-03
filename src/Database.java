@@ -1,4 +1,3 @@
-import java.net.ConnectException;
 import java.sql.*;
 import DB.*;
 import java.util.HashMap;
@@ -220,7 +219,7 @@ public class Database {
 
         pstmt.close();
         conn.close();
-        
+
         System.out.println(username + " has been deleted successfully.");
     }
 
@@ -234,135 +233,6 @@ public class Database {
 //            map.put(username, password);
 //        }
 //    }
-
-    private static void runSQLStatement(String sql) {
-        try (Connection conn = DriverManager.getConnection(databaseURL)) {
-            if (conn != null) {
-                try (Statement stmt = conn.createStatement()) {
-                    stmt.executeUpdate(sql);
-                }
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static Object[] runSQLQuery(String sql) {
-        try {
-            Connection conn = DriverManager.getConnection(databaseURL);
-            if (conn != null) {
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                return new Object[]{conn, stmt, rs};
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-        return null;
-    }
-    
-    private static void connect() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(databaseURL);
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static void checkConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(databaseURL);
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static void makeStatement() {
-        checkConnection();
-        try {
-            if (connection != null) {
-                statement = connection.createStatement();
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-    
-    private static void runStatement(String sql) {
-        try {
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-    
-    private static void createPreparedStatement(String sql) {
-        checkConnection();
-        try {
-            if (connection != null) {
-                preparedStatement = connection.prepareStatement(sql);
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static void prepareStrings(String[] statements) {
-        int length = statements.length;
-        try {
-            for (int i = 1; i <= length; i++) {
-                preparedStatement.setString(i, statements[i - 1]);
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static void makeResultSet() {
-        try {
-            if (connection != null) {
-            resultSet = preparedStatement.executeQuery();
-            }
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-    
-    private static void closeCONN() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static void closeSTMT() {
-        try {
-            statement.close();
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-
-    private static void closePSTMT() {
-        try {
-            preparedStatement.close();
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
-   
-    private static void closeRS() {
-        try {
-            resultSet.close();
-        } catch (SQLException e) {
-            printSQLError(e);
-        }
-    }
 
     public static void printSQLError(SQLException e) {
         System.out.println("Error: " + e.getMessage());
