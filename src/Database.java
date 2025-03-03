@@ -234,6 +234,10 @@ public class Database {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 map.put(username, password);
+                rs.close();
+                resultSet.close();
+                stmt.close();
+                conn.close();
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception when getting user accounts");
