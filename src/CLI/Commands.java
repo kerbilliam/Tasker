@@ -1,6 +1,12 @@
 package CLI;
 
 public class Commands {
+    private static Arguments help() {
+        String name = "help";
+        String[] ali = {"help", "-h", "-?","--help"};
+        String desc = "Prints database/table structure and passable arguments";
+        return new Command(name, ali, desc);
+    }
     public static Arguments init() {
         String name = "init";
         String[] ali = {"init", "initialize", "initialize-database"};
@@ -66,6 +72,6 @@ public class Commands {
     }
 
     public static Arguments[] getAll() {
-        return new Arguments[]{init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser()};
+        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser()};
     }
 }

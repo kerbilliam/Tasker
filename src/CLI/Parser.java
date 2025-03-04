@@ -52,7 +52,7 @@ public class Parser {
         Arguments[] commands = Commands.getAll();
 
         if (args.length == 0) {
-            HelpOutput.printHelp();
+            HelpOutput.printArguments();
             System.exit(1);
         }
         
@@ -60,13 +60,17 @@ public class Parser {
             if (command.isAlias(args[0])) {
                 try {
                     map.put("command", command.getName());
+                    break;
                 } catch (Exception e) {
                     System.err.println("Error occured when parsing arguments");
                     System.err.println(e);
                 }
-            } else {
-                System.out.println(StrColor.RED + "Invalid command: "+StrColor.RESET+ args[0]);
             }
+        }
+
+        if (map.get("command") == null) {
+            System.out.println(StrColor.RED + "Invalid command: "+StrColor.RESET+ args[0]);
+            System.exit(1);
         }
         
         for (int i = 1; i < args.length; i++) {

@@ -1,4 +1,5 @@
 package DB;
+import CLI.HelpOutput;
 import Colors.StrColor;
 
 import java.sql.*;
@@ -96,6 +97,7 @@ public class Database {
 
     private static void printFormattedTaskTable(ResultSet resultSet) {
         try {
+            System.out.println();
             System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
                     "Task",
                     "Due",
@@ -104,6 +106,8 @@ public class Database {
                     "Priority",
                     "Created"
             );
+            HelpOutput.printSeparator(100);
+            System.out.println();
             while (resultSet.next()) {
                 System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
                         resultSet.getString(TASK_NAME),
@@ -122,12 +126,15 @@ public class Database {
 
     private static void printFormattedUserTable(ResultSet resultSet) {
         try {
+            System.out.println();
             System.out.printf("%-15s%-25s%-25s%s%n",
                     "Username",
                     "First",
                     "Last",
                     "Created"
             );
+            HelpOutput.printSeparator(100);
+            System.out.println();
             while (resultSet.next()) {
                 System.out.printf("%-15s%-25s%-25s%s%n",
                         resultSet.getString(USERNAME),
@@ -165,7 +172,7 @@ public class Database {
             System.exit(1);
         }
         String sql = "UPDATE "+taskTableName+" SET "+field+" = ? WHERE "+where+" = ?;";
-        String[] values = {field, isThis};
+        String[] values = {value, isThis};
         Conn conn = new Conn();
         PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
         pstmt.setNrunStatement(values);

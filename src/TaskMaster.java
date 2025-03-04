@@ -1,12 +1,13 @@
 import CLI.HelpOutput;
 import CLI.Parser;
+import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
 
 public class TaskMaster {
 	public static void main(String[] args) {
 		if (args.length == 0) {
-			HelpOutput.printHelp();
+			HelpOutput.printArguments();
 			System.exit(1);
 		}
 		Parser psr = new Parser();
@@ -18,6 +19,9 @@ public class TaskMaster {
 		String value = map.get("value");
 
 		switch (map.get("command")) {
+			case "help":
+				HelpOutput.printHelp();
+				break;
 			case "init":
 				Database.init();
 				break;
@@ -43,6 +47,10 @@ public class TaskMaster {
 				break;
 
 			case "deleteTask":
+				if (map.get(Database.TASK_NAME) == null) {
+					System.out.println(StrColor.RED+ "Error: Must define a task to delete"+StrColor.RESET);
+					break;
+				}
 				Database.deleteTask(map.get(Database.TASK_NAME));
 				break;
 
@@ -59,7 +67,7 @@ public class TaskMaster {
 				break;
 
 			default:
-				HelpOutput.printHelp();
+				HelpOutput.printArguments();
 		}
 	}
 }
