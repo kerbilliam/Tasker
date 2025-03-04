@@ -16,7 +16,7 @@ Table name = `tasks`
 
 | id | task | due | assigned_users | status | priority | created |
 |-|-|-|-|-|-|-|
-| for database only | `String` task name | `String` due date of task | `String` assigned users to task | `String` stats of task | `String` priority of task | `String` created date (**Automatically Created**) |
+| for database only | `String` task name **REQUIRED**| `String` due date of task | `String` assigned users to task | `String` stats of task | `String` priority of task | `String` created date (**Automatically Created**) |
 ## Displaying Databases
 | Method    | Description               |
 | --------- | ------------------------- |
