@@ -1,6 +1,7 @@
 package CLI;
 import java.util.HashMap;
 
+import Colors.StrColor;
 import DB.Database;
 
 public class Parser {
@@ -63,6 +64,8 @@ public class Parser {
                     System.err.println("Error occured when parsing arguments");
                     System.err.println(e);
                 }
+            } else {
+                System.out.println(StrColor.RED + "Invalid command: "+StrColor.RESET+ args[0]);
             }
         }
         
