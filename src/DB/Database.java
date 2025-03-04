@@ -1,4 +1,6 @@
 package DB;
+import Colors.StrColor;
+
 import java.sql.*;
 import java.util.HashMap;
 
@@ -47,11 +49,12 @@ public class Database {
 
         statement.close();
         connection.close();
+        System.out.println(StrColor.GREEN + "Database initialized successfully!"+ StrColor.RESET);
     }
 
-    public static void printTable(String table_name, String field, String fieldValue) {
-        String[] input = {fieldValue};
-        String sql = "SELECT * FROM "+table_name+" WHERE "+field+" = ?;";
+    public static void printTable(String table_name, String where, String isThis) {
+        String[] input = {isThis};
+        String sql = "SELECT * FROM "+table_name+" WHERE "+where+" = ?;";
         Conn conn = new Conn();
         PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
         pstmt.setStatement(input);

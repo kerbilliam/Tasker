@@ -72,7 +72,35 @@ public class Flags {
         return new Flag(name, ali, desc);
     }
 
+    public static Arguments where() {
+        String name = "where";
+        String[] ali = {"--where", "-w"};
+        String desc = "Filter by this field. Use with --is-this";
+        return new Flag(name, ali, desc);
+    }
+
+    private static Arguments isThis() {
+        String name = "isThis";
+        String[] ali = {"--is-this"};
+        String desc = "Filtering field value equals this. Use with --where";
+        return new Flag(name, ali, desc);
+    }
+
+    private static Arguments field() {
+        String name = "field";
+        String[] ali = {"--field"};
+        String desc = "Field you want to update. Use with --value";
+        return new Flag(name, ali, desc);
+    }
+
+    private static Arguments value() {
+        String name = "value";
+        String[] ali = {"--value"};
+        String desc = "Value you want to update in field. Use with --field";
+        return new Flag(name, ali, desc);
+    }
+
     public static Arguments[] getAll() {
-        return new Arguments[]{table(), task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password()};
+        return new Arguments[]{table(), task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
     }
 }

@@ -24,6 +24,12 @@ public class Parser {
     // Command called to return
     private String command = null;
 
+    // Filter Fields
+    private String where = null;
+    private String isThis = null;
+    private String field = null;
+    private String value = null;
+
     public Parser() {
         map.put(Database.TASK_NAME, task);
         map.put(Database.DUE_DATE, due);
