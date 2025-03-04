@@ -4,7 +4,7 @@ import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
 
-public class TaskMaster {
+public class Tasker {
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			HelpOutput.printArguments();
