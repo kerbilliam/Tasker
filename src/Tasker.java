@@ -4,6 +4,7 @@ import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
 
+
 public class Tasker {
 	public static void main(String[] args) {
 		if (args.length == 0) {
@@ -18,6 +19,12 @@ public class Tasker {
 		String field = map.get("field");
 		String value = map.get("value");
 
+		Authentication test = new Authentication();
+
+		if(test.isRegisteredUser(map.get(Database.USERNAME),map.get(Database.PASSWORD)) == false){
+			System.out.println("Error: Username or Password is incorrect");
+			System.exit(1);
+		}
 		switch (map.get("command")) {
 			case "help":
 				HelpOutput.printHelp();
