@@ -70,8 +70,15 @@ public class Commands {
         String desc = "Removes specified user from database. Requires ADMIN privaleges";
         return new Command(name, ali, desc);
     }
+    
+    private static Arguments login() {
+        String name = "login";
+        String[] ali = {"login", "logon", "log-in", "log-on"};
+        String desc = "Login with specified username and password. User must exist in database.";
+        return new Command(name, ali, desc);
+    }
 
     public static Arguments[] getAll() {
-        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser()};
+        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser(), login()};
     }
 }

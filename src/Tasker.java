@@ -17,7 +17,7 @@ public class Tasker {
 		String isThis = map.get("isThis");
 		String field = map.get("field");
 		String value = map.get("value");
-
+		
 		switch (map.get("command")) {
 			case "help":
 				HelpOutput.printHelp();
@@ -25,7 +25,12 @@ public class Tasker {
 			case "init":
 				Database.init();
 				break;
+			case "login":
+				// code to login
+				break;
+		}
 
+		switch (map.get("command")) {
 			case "printTable":
 				if (args.length == 3) {
 					Database.printTable(map.get("table"));
