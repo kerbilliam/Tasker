@@ -7,29 +7,23 @@ import DB.Database;
 public class Parser {
     private HashMap<String, String> map = new HashMap<>();
     // Table Parameters
-    private String table = null;
+    public static final String table = null;
     
     // Task Parameters
-    private String task = null;
-    private String due = "2999-01-01 00:00:00";
-    private String assigned_users = "";
-    private String status = "";
-    private String priority = "";
+    public static final String task = null;
+    public static final String due = "2999-01-01 00:00:00";
+    public static final String assigned_users = "";
+    public static final String status = "";
+    public static final String priority = "";
 
     // User Parameters
-    private String username = null;
-    private String first_name = "";
-    private String last_name = "";
-    private String password = null;
+    public static final String username = null;
+    public static final String first_name = "";
+    public static final String last_name = "";
+    public static final String password = null;
 
     // Command called to return
-    private String command = null;
-
-    // Filter Fields
-    private String where = null;
-    private String isThis = null;
-    private String field = null;
-    private String value = null;
+    public static final String command = null;
 
     public Parser() {
         map.put(Database.TASK_NAME, task);
