@@ -1,5 +1,17 @@
 package CLI;
 
+/**
+ * Specified Commands for {@code Parser}. Must include a name, aliases, and description. Example:
+ * <pre>
+ * private static Arguments command_name() {
+ *      String name = "name";
+ *      String[] ali = {"ali1", "ali2"};
+ *      String desc = "Description for command_name";
+ *      return new Flag(name, ali, desc);
+ * }
+ * </pre>
+ * Once a flag has been specified, you must add it to the {@code String[]} returned by {@code getAll()}.
+ */
 public class Commands {
     private static Arguments help() {
         String name = "help";
@@ -78,6 +90,10 @@ public class Commands {
         return new Command(name, ali, desc);
     }
 
+    /**
+     * Returns all Commands made in {@code Commands} as a list of {@code Arguments}.
+     * @return {@code Arguments[]} of created commands.
+     */
     public static Arguments[] getAll() {
         return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser(), login()};
     }
