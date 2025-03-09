@@ -5,6 +5,9 @@ import DB.Database;
 import java.util.Arrays;
 
 public class HelpOutput {
+    /**
+     * Prints all Commands and Flags with their associated aliases and and descriptions in a formatted list. 
+     */
     public static void printArguments() {
         Arguments[] commands = Commands.getAll();
         Arguments[] flags = Flags.getAll();
@@ -38,6 +41,9 @@ public class HelpOutput {
         }
     }
 
+    /**
+     * Prints the column names used for the databases (formatted) and also runs <pre>printArguments()<pre>
+     */
     public static void printHelp() {
         System.out.println();
         printSeparator(25);
@@ -53,6 +59,10 @@ public class HelpOutput {
         printArguments();
     }
 
+    /**
+     * Prints '-' repeating for n times. Does not create a new line.
+     * @param n repeat {@code n} times.
+     */
     public static void printSeparator(int n) {
         for (int i = 0; i < n; i++) {
             System.out.print("-");
