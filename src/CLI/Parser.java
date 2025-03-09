@@ -41,6 +41,10 @@ public class Parser {
         map.put("table", table);
     }
     
+    /**
+     * Parses through given arguments and creates a map of values associated with each argument.
+     * @param args An array of arguments
+     */
     public void parse(String[] args) {
         Arguments[] flags = Flags.getAll();
         Arguments[] commands = Commands.getAll();
@@ -86,6 +90,10 @@ public class Parser {
         }
     }
     
+    /**
+     * Gets the map of arg value pairs created when parsing args.
+     * @return map of arg value pairs
+     */
     public HashMap<String, String> getMap() {
         return map;
     }
