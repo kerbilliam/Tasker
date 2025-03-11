@@ -93,7 +93,7 @@ public class Flags {
 
     private static Arguments isThis() {
         String name = "isThis";
-        String[] ali = {"--is-this"};
+        String[] ali = {"--is-this", "--is"};
         String desc = "Filtering field value equals this. Use with --where";
         return new Flag(name, ali, desc);
     }
