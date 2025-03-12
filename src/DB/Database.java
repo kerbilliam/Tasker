@@ -115,7 +115,7 @@ public class Database {
                         Ciphers.decrypt(resultSet.getString(ASSIGNED_USER), Ciphers.getKey()),
                         Ciphers.decrypt(resultSet.getString(STATUS), Ciphers.getKey()),
                         Ciphers.decrypt(resultSet.getString(PRIORITY), Ciphers.getKey()),
-                        Ciphers.decrypt(resultSet.getString(CREATED), Ciphers.getKey())
+                        resultSet.getDate(CREATED)
                 );
             }
         } catch(SQLException e) {
