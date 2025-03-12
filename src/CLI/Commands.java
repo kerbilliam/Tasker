@@ -30,63 +30,63 @@ public class Commands {
     public static Arguments printTable() {
         String name = "printTable";
         String[] ali = {"print", "display", "list", "ls"};
-        String desc = "Prints specified table's contents to standard output.";
+        String desc = "Prints specified table's contents to standard output. Use with -T";
         return new Command(name, ali, desc);
     }
     
     public static Arguments addTask() {
         String name = "addTask";
         String[] ali = {"add-task", "addTask","at"};
-        String desc = "Adds task to database. TASK TITLE IS REQUIRED";
+        String desc = "Adds task to database. Use with -n -d -u -s -p. Task name is REQUIRED";
         return new Command(name, ali, desc);
     }
 
     public static Arguments updateTasks() {
         String name = "updateTasks";
         String[] ali = {"update-task", "updateTask", "upt"};
-        String desc = "Updates existing task with specified field values";
+        String desc = "Updates existing task with specified field values. Use with --where --is --field --value";
         return new Command(name, ali, desc);
     }
     
     public static Arguments assignUser() {
         String name = "assignUser";
         String[] ali = {"assign-user", "assignUser", "au"};
-        String desc = "Assigns given user to specified existing task";
+        String desc = "Assigns given user to specified existing task. Use with --where --is -U";
         return new Command(name, ali, desc);
     }
     
     public static Arguments deleteTask() {
         String name = "deleteTask";
         String[] ali = {"delete-task", "deleteTask", "dt"};
-        String desc = "Deletes specified task from the database";
+        String desc = "Deletes specified task from the database. Use with --name";
         return new Command(name, ali, desc);
     }
     
     public static Arguments addUser() {
         String name = "addUser";
         String[] ali = {"add-user", "addUser", "adu"};
-        String desc = "Adds specified user to databse. Requires username and password flags";
+        String desc = "Adds specified user to databse. Use with -U --pass --first --last. Username and Password are REQUIRED";
         return new Command(name, ali, desc);
     }
     
     public static Arguments updateUser() {
         String name = "updateUser";
         String[] ali = {"update-user", "updateUser", "uu"};
-        String desc = "Updates information for user";
+        String desc = "Updates information for user. Use with -U --field --value";
         return new Command(name, ali, desc);
     }
     
     public static Arguments removeUser() {
         String name = "removeUser";
         String[] ali = {"remove-user", "removeUser", "ru"};
-        String desc = "Removes specified user from database. Requires ADMIN privaleges";
+        String desc = "Removes specified user from database. Use with -U. Requires ADMIN privilege";
         return new Command(name, ali, desc);
     }
     
     private static Arguments login() {
         String name = "login";
         String[] ali = {"login", "logon", "log-in", "log-on"};
-        String desc = "Login with specified username and password. User must exist in database.";
+        String desc = "Login with specified username and password. Use with -U --pass. User must exist in database.";
         return new Command(name, ali, desc);
     }
 
