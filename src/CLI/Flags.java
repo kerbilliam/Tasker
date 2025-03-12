@@ -31,7 +31,7 @@ public class Flags {
     public static Arguments due() {
         String name = Database.DUE_DATE;
         String[] ali = {"--due", "--due-date", "--deadline", "-d"};
-        String desc = "Task Due Date: must be in 'YYYY-MM-DD: HH:MM:SS' format";
+        String desc = "Task Due Date: must be in 'YYYY-MM-DD HH:MM:SS' format";
         return new Flag(name, ali ,desc);
     }
     
