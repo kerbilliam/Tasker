@@ -1,7 +1,7 @@
 package DB;
 import CLI.HelpOutput;
 import Colors.StrColor;
-
+import Cipher.Ciphers;
 import java.sql.*;
 import java.util.HashMap;
 
@@ -53,7 +53,7 @@ public class Database {
         System.out.println(StrColor.GREEN + "Database initialized successfully!"+ StrColor.RESET);
     }
 
-    public static void printTable(String table_name, String where, String isThis) {
+    public static void printTable(String table_name, String where, String isThis) throws Exception {
         String[] input = {isThis};
         String sql = "SELECT * FROM "+table_name+" WHERE "+where+" = ?;";
         Conn conn = new Conn();
@@ -74,7 +74,7 @@ public class Database {
         conn.close();
     }
 
-    public static void printTable(String table_name) {
+    public static void printTable(String table_name) throws Exception {
         String sql = "SELECT * FROM "+table_name+";";
         Conn conn = new Conn();
         PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
@@ -95,7 +95,7 @@ public class Database {
 
 
 
-    private static void printFormattedTaskTable(ResultSet resultSet) {
+    private static void printFormattedTaskTable(ResultSet resultSet) throws Exception { //DECRYPTED
         try {
             System.out.println();
             System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
@@ -110,12 +110,12 @@ public class Database {
             System.out.println();
             while (resultSet.next()) {
                 System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
-                        resultSet.getString(TASK_NAME),
-                        resultSet.getDate(DUE_DATE),
-                        resultSet.getString(ASSIGNED_USER),
-                        resultSet.getString(STATUS),
-                        resultSet.getString(PRIORITY),
-                        resultSet.getDate(CREATED)
+                        Ciphers.decrypt(resultSet.getString(TASK_NAME), Ciphers.getKey()), 
+                        resultSet.getDate(DUE_DATE), 
+                        Ciphers.decrypt(resultSet.getString(ASSIGNED_USER), Ciphers.getKey()),
+                        Ciphers.decrypt(resultSet.getString(STATUS), Ciphers.getKey()),
+                        Ciphers.decrypt(resultSet.getString(PRIORITY), Ciphers.getKey()),
+                        Ciphers.decrypt(resultSet.getString(CREATED), Ciphers.getKey())
                 );
             }
         } catch(SQLException e) {
@@ -124,7 +124,7 @@ public class Database {
         }
     }
 
-    private static void printFormattedUserTable(ResultSet resultSet) {
+    private static void printFormattedUserTable(ResultSet resultSet) throws Exception { //DECRYPT
         try {
             System.out.println();
             System.out.printf("%-15s%-25s%-25s%s%n",
@@ -137,9 +137,9 @@ public class Database {
             System.out.println();
             while (resultSet.next()) {
                 System.out.printf("%-15s%-25s%-25s%s%n",
-                        resultSet.getString(USERNAME),
-                        resultSet.getString(FIRST_NAME),
-                        resultSet.getString(LAST_NAME),
+                        Ciphers.decrypt(resultSet.getString(USERNAME), Ciphers.getKey()), 
+                        Ciphers.decrypt(resultSet.getString(FIRST_NAME), Ciphers.getKey()), 
+                        Ciphers.decrypt(resultSet.getString(LAST_NAME), Ciphers.getKey()), 
                         resultSet.getDate(CREATED)
                 );
             }
@@ -166,7 +166,7 @@ public class Database {
         System.out.println("Task: " + task_name + " has been successfully added.");
     }
 
-    public static void updateTasks(String where, String isThis, String field, String value) {
+    public static void updateTasks(String where, String isThis, String field, String value) { //decrypt
         if (field.equals(ASSIGNED_USER)) {
             System.out.print("use assignUser to assign users to a task");
             System.exit(1);
@@ -183,7 +183,7 @@ public class Database {
         System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+isThis+"'");
     }
 
-    public static void assignUser(String where, String isThis, String username) {
+    public static void assignUser(String where, String isThis, String username) { //decrypt
         String sql = "UPDATE "+taskTableName+" SET "+ASSIGNED_USER+" = ? WHERE "+where+" = ?";
         String[] values = {username, isThis};
         Conn conn = new Conn();
@@ -206,7 +206,7 @@ public class Database {
         pstmt.close();
         conn.close();
         
-        System.out.println(task_name + " successfully deleted.");
+        System.out.println(task_name + " successfully deleted."); //decrypt
     }
 
     // USER TABLE METHODS

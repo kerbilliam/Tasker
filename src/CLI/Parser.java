@@ -1,6 +1,6 @@
 package CLI;
 import java.util.HashMap;
-
+import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
 
@@ -73,14 +73,18 @@ public class Parser {
             System.exit(1);
         }
         
-        for (int i = 1; i < args.length; i++) {
+        for (int i = 1; i < args.length; i++) { //ENCRYPTEDDDDDDDDDDDDDDDDDD
             for (Arguments flag : flags) {
 
                 if (flag.isAlias(args[i])) {
 
                     try {
+                        if (flag.getName().equals(Database.DUE_DATE)){
+                            map.put(flag.getName(), args[i + 1]);
+                        } else {
+                            map.put(flag.getName(), Ciphers.encrypt(args[i + 1], Ciphers.getKey()));
+                        }
 
-                        map.put(flag.getName(), args[i + 1]);
                         i++;
 
                     } catch (Exception e) {

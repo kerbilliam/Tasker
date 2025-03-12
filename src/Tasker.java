@@ -3,9 +3,10 @@ import CLI.Parser;
 import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
+import Cipher.Ciphers;
 
 public class Tasker {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
 			HelpOutput.printArguments();
 			System.exit(1);
@@ -28,9 +29,9 @@ public class Tasker {
 
 			case "printTable":
 				if (args.length == 3) {
-					Database.printTable(map.get("table"));
+					Database.printTable(Ciphers.decrypt(map.get("table"), Ciphers.getKey()));
 				} else {
-					Database.printTable(map.get("table"), where, isThis);
+					Database.printTable(Ciphers.decrypt(map.get("table"), Ciphers.getKey()), where, isThis);
 				}
 				break;
 
