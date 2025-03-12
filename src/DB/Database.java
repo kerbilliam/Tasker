@@ -18,6 +18,11 @@ public class Database {
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
     public static final String PASSWORD = "password";
+    public static final String IS_ADMIN  = "admin";
+    
+    // Default Admin Account
+    public static final String DEFUALT_ADMIN_USERNAME = "admin";
+    public static final String DEFAUTL_ADMIN_PASSWORD = "PasswordDB123";
 
     // Table Constants
     public static final String userTableName = "users";
@@ -33,6 +38,7 @@ public class Database {
                 FIRST_NAME+" TEXT, " +
                 LAST_NAME+" TEXT, " +
                 PASSWORD+" TEXT NOT NULL, " +
+                IS_ADMIN+" BIT DEFAULT 0, " +
                 CREATED+" DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ");";
         statement.executeUpdate(sql);
@@ -47,9 +53,10 @@ public class Database {
                 CREATED+" DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ");";
         statement.executeUpdate(sql);
-
         statement.close();
         connection.close();
+
+        addAdmin(DEFUALT_ADMIN_USERNAME, DEFAUTL_ADMIN_PASSWORD);
         System.out.println(StrColor.GREEN + "Database initialized successfully!"+ StrColor.RESET);
     }
 
@@ -222,6 +229,17 @@ public class Database {
         conn.close();
 
         System.out.println("New user: [" + username + "] created.");
+    }
+    
+    private static void addAdmin(String username, String password) {
+        String sql = "INSERT INTO "+userTableName+" ("+USERNAME+", "+PASSWORD+", "+FIRST_NAME+", "+LAST_NAME+", "+IS_ADMIN+") VALUES (?, ?, ?, ?, ?);";
+        String[] values = {username, password, "", "", "1"};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
     }
 
     public static void updateUser(String username, String field, String value) {
