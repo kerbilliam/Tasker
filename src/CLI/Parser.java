@@ -73,13 +73,13 @@ public class Parser {
             System.exit(1);
         }
         
-        for (int i = 1; i < args.length; i++) { //ENCRYPTEDDDDDDDDDDDDDDDDDD
+        for (int i = 1; i < args.length; i++) {
             for (Arguments flag : flags) {
 
                 if (flag.isAlias(args[i])) {
 
                     try {
-                        if (flag.getName().equals(Database.DUE_DATE)){
+                        if (flag.getName().equals(Database.DUE_DATE) || flag.getName().equals(Database.CREATED)){
                             map.put(flag.getName(), args[i + 1]);
                         } else {
                             map.put(flag.getName(), Ciphers.encrypt(args[i + 1], Ciphers.getKey()));
