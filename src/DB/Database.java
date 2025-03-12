@@ -291,6 +291,28 @@ public class Database {
         }
         return map;
     }
+    
+    public static Boolean isAdmin(String username, String password) {
+        String sql = "SELECT * FROM "+userTableName+";";
+        Conn conn = new Conn();
+        STMT stmt = new STMT(conn.getConnection());
+        RS resultSet = new RS(stmt.getStatement(), sql);
+        try {
+            while (resultSet.getResultSet().next()) {
+                String name = resultSet.getResultSet().getString(USERNAME);
+                String pass = resultSet.getResultSet().getString(PASSWORD);
+                byte isAdmin = resultSet.getResultSet().getByte(IS_ADMIN);
+                if (name.equals(username) && pass.equals(password) && isAdmin == 1) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception when checking admin privilege");
+            System.err.println(e);
+            System.exit(1);
+        }
+        return false;
+    }
 
     public static void printSQLError(SQLException e) {
         System.out.println("Error: " + e.getMessage());
