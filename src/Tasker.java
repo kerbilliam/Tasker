@@ -21,13 +21,13 @@ public class Tasker {
 		switch (map.get("command")) {
 			case "help":
 				HelpOutput.printHelp();
-				break;
+				System.exit(1);
 			case "init":
 				Database.init();
-				break;
+				System.exit(1);
 			case "login":
 				// code to login
-				break;
+				System.exit(1);
 		}
 
 		switch (map.get("command")) {
