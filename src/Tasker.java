@@ -29,28 +29,8 @@ public class Tasker {
 				Database.init();
 				break;
 			case "login":
-				TaskerMethods t = new TaskerMethods();
-				// Retrieve the username and password from the map
-				String username = map.get(Database.USERNAME);
-				String password = map.get(Database.PASSWORD);
-
-				if (username == null || password == null) {
-					System.out.println("Please provide a username and password.");
-					System.exit(1);
-				}
-
-				// Call the method to check if the user is registered
-				t.isRegisteredUser(username);  // Check if the user exists
-
-				// If the user is registered, you can write the logged-in user to file
-				if (t.setAbility()) {
-					t.writeToFile2();  // Store the logged-in user
-					System.out.println("Login successful! Welcome back, " + username + ".");
-				} else {
-					System.out.println("Invalid username or password.");
-				}
-
-				break;
+				TaskerMethods.login(map.get(Database.USERNAME), map.get(Database.PASSWORD));
+				System.exit(0);
 		}
 
 		switch (map.get("command")) {
