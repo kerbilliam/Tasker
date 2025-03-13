@@ -18,9 +18,11 @@ public class Tasker {
 		psr.parse(args);
 		HashMap<String, String> map = psr.getMap();
 		String where = Ciphers.decrypt(map.get("where"), Ciphers.getKey());
-		String isThis = Ciphers.decrypt(map.get("isThis"), Ciphers.getKey());
+		String isThis = map.get("isThis");
+		// String isThis = Ciphers.decrypt(map.get("isThis"), Ciphers.getKey());
 		String field = Ciphers.decrypt(map.get("field"), Ciphers.getKey());
-		String value = Ciphers.decrypt(map.get("value"), Ciphers.getKey());
+		String value = map.get("value");
+		// String value = Ciphers.decrypt(map.get("value"), Ciphers.getKey());
 
 		switch (map.get("command")) {
 			case "help":
