@@ -1,6 +1,6 @@
 package CLI;
 import java.util.HashMap;
-
+import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
 
@@ -79,8 +79,12 @@ public class Parser {
                 if (flag.isAlias(args[i])) {
 
                     try {
+                        if (flag.getName().equals(Database.DUE_DATE) || flag.getName().equals(Database.CREATED)){
+                            map.put(flag.getName(), args[i + 1]);
+                        } else {
+                            map.put(flag.getName(), Ciphers.encrypt(args[i + 1], Ciphers.getKey()));
+                        }
 
-                        map.put(flag.getName(), args[i + 1]);
                         i++;
 
                     } catch (Exception e) {
