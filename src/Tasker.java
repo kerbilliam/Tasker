@@ -67,11 +67,22 @@ public class Tasker {
 				break;
 
 			case "updateUser":
-				Database.updateUser(map.get(Database.USERNAME), field, value);
+				if(Database.isAdmin(TaskerMethods.getCurrentUser(),TaskerMethods.loggedOn().get(0)) == true) {
+					Database.updateUser(map.get(Database.USERNAME), field, value);
+
+				}
+				else{
+					System.out.println("You need to be an admin to use this command");
+
+				}
 				break;
 
 			case "removeUser":
+				if(Database.isAdmin(TaskerMethods.getCurrentUser(),TaskerMethods.loggedOn().get(0)) == true) {
 				Database.removeUser(map.get(Database.USERNAME));
+				} else{
+				System.out.println("You need to be an admin to use this command");
+				}
 				break;
 
 			default:
