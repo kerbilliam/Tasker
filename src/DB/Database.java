@@ -164,7 +164,7 @@ public class Database {
         System.out.println("Task: " + Ciphers.decrypt(task_name, Ciphers.getKey()) + " has been successfully added.");
     }
 
-    public static void updateTasks(String where, String isThis, String field, String value) { 
+    public static void updateTasks(String where, String isThis, String field, String value) { //+
         if (field.equals(ASSIGNED_USER)) {
             System.out.print("use assignUser to assign users to a task");
             System.exit(1);
@@ -181,7 +181,7 @@ public class Database {
         System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+isThis+"'");
     }
 
-    public static void assignUser(String where, String isThis, String username) { 
+    public static void assignUser(String where, String isThis, String username) { //+
         String sql = "UPDATE "+taskTableName+" SET "+ASSIGNED_USER+" = ? WHERE "+where+" = ?";
         String[] values = {username, isThis};
         Conn conn = new Conn();
@@ -222,7 +222,7 @@ public class Database {
         System.out.println("New user: [" + Ciphers.decrypt(username, Ciphers.getKey()) + "] created.");
     }
 
-    public static void updateUser(String username, String field, String value) {
+    public static void updateUser(String username, String field, String value) throws Exception { //+
         String sql = "UPDATE "+userTableName+" SET "+field+" = ? WHERE "+USERNAME+" = ?;";
         String[] values = {value, username};
         Conn conn = new Conn();
@@ -232,7 +232,7 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println(field + " updated to ["+value+"] for user: " + username);
+        System.out.println(field + " updated to ["+value+"] for user: " + Ciphers.decrypt(username, Ciphers.getKey()));
     }
 
     public static void removeUser(String username) throws Exception { //+

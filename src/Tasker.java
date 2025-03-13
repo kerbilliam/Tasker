@@ -3,6 +3,9 @@ import CLI.Parser;
 import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
+
+import javax.crypto.Cipher;
+
 import Cipher.Ciphers;
 
 public class Tasker {
@@ -14,10 +17,10 @@ public class Tasker {
 		Parser psr = new Parser();
 		psr.parse(args);
 		HashMap<String, String> map = psr.getMap();
-		String where = map.get("where");
-		String isThis = map.get("isThis");
-		String field = map.get("field");
-		String value = map.get("value");
+		String where = Ciphers.decrypt(map.get("where"), Ciphers.getKey());
+		String isThis = Ciphers.decrypt(map.get("isThis"), Ciphers.getKey());
+		String field = Ciphers.decrypt(map.get("field"), Ciphers.getKey());
+		String value = Ciphers.decrypt(map.get("value"), Ciphers.getKey());
 
 		switch (map.get("command")) {
 			case "help":
