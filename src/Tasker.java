@@ -2,11 +2,13 @@ import CLI.HelpOutput;
 import CLI.Parser;
 import Colors.StrColor;
 import DB.Database;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-
 public class Tasker {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		if (args.length == 0) {
 			HelpOutput.printArguments();
 			System.exit(1);
@@ -18,13 +20,7 @@ public class Tasker {
 		String isThis = map.get("isThis");
 		String field = map.get("field");
 		String value = map.get("value");
-
-		Authentication test = new Authentication();
-
-		if(test.isRegisteredUser(map.get(Database.USERNAME),map.get(Database.PASSWORD)) == false){
-			System.out.println("Error: Username or Password is incorrect");
-			System.exit(1);
-		}
+		
 		switch (map.get("command")) {
 			case "help":
 				HelpOutput.printHelp();
@@ -32,7 +28,32 @@ public class Tasker {
 			case "init":
 				Database.init();
 				break;
+			case "login":
+				TaskerMethods t = new TaskerMethods();
+				// Retrieve the username and password from the map
+				String username = map.get(Database.USERNAME);
+				String password = map.get(Database.PASSWORD);
 
+				if (username == null || password == null) {
+					System.out.println("Please provide a username and password.");
+					System.exit(1);
+				}
+
+				// Call the method to check if the user is registered
+				t.isRegisteredUser(username);  // Check if the user exists
+
+				// If the user is registered, you can write the logged-in user to file
+				if (t.setAbility()) {
+					t.writeToFile2();  // Store the logged-in user
+					System.out.println("Login successful! Welcome back, " + username + ".");
+				} else {
+					System.out.println("Invalid username or password.");
+				}
+
+				break;
+		}
+
+		switch (map.get("command")) {
 			case "printTable":
 				if (args.length == 3) {
 					Database.printTable(map.get("table"));
