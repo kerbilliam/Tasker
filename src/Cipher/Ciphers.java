@@ -30,7 +30,6 @@ public class Ciphers {
  
     }
 
-
     public static String decrypt(String cipherText, String key) throws Exception {
         try{
             if (cipherText == null || cipherText.length() == 0) {
@@ -48,8 +47,5 @@ public class Ciphers {
             System.err.println("Error occurred during decryption: " + e);
             return "";
         }
-            
-
-        
     }
 }

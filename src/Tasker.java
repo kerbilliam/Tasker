@@ -1,12 +1,9 @@
 import CLI.HelpOutput;
 import CLI.Parser;
+import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
-
-import javax.crypto.Cipher;
-
-import Cipher.Ciphers;
 
 public class Tasker {
 	public static void main(String[] args) throws Exception {
@@ -19,10 +16,8 @@ public class Tasker {
 		HashMap<String, String> map = psr.getMap();
 		String where = Ciphers.decrypt(map.get("where"), Ciphers.getKey());
 		String isThis = map.get("isThis");
-		// String isThis = Ciphers.decrypt(map.get("isThis"), Ciphers.getKey());
 		String field = Ciphers.decrypt(map.get("field"), Ciphers.getKey());
 		String value = map.get("value");
-		// String value = Ciphers.decrypt(map.get("value"), Ciphers.getKey());
 
 		switch (map.get("command")) {
 			case "help":
