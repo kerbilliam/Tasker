@@ -46,13 +46,28 @@ public class HelpOutput {
      */
     public static void printHelp() {
         System.out.println();
+        System.out.print(StrColor.CYAN);
         printSeparator(25);
         System.out.print("DATABASE FIELD NAMES");
         printSeparator(25);
+        System.out.print(StrColor.RESET);
         System.out.println();
         System.out.println();
-//        System.out.println(Database.TASK_NAME+"\t|      "+Database.DUE_DATE+"\t|    "+Database.ASSIGNED_USER+"\t|    "+Database.STATUS+"\t|    "+Database.PRIORITY);
+        printSeparator(25);
+        System.out.print("TASKS TABLE");
+        printSeparator(25);
+        System.out.println();
+        System.out.println();
         System.out.printf("%-5s"+Database.TASK_NAME+"%-5s|%-5s"+Database.DUE_DATE+"%5s|%-5s"+Database.ASSIGNED_USER+"%-5s|%-5s"+Database.STATUS+"%-5s|%-5s"+Database.PRIORITY+"%5s", "", "", "", "", "", "", "", "", "", "");
+        System.out.println();
+        System.out.println();
+
+        printSeparator(25);
+        System.out.print("USERS TABLE");
+        printSeparator(25);
+        System.out.println();
+        System.out.println();
+        System.out.printf("%-5s"+Database.USERNAME+"%-5s|%-5s"+Database.PASSWORD+"%-5s|%-5s"+Database.FIRST_NAME+"%-5s|%-5s"+Database.LAST_NAME, "", "", "", "", "", "", "");
         System.out.println();
         System.out.println();
 
