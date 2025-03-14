@@ -89,7 +89,6 @@ public class Parser {
                         System.exit(1);
                     }
 
-                } else {
                 }
             }
             if (increment_check != i) {
