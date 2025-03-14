@@ -24,8 +24,7 @@ public class Commands {
     public static Arguments init() {
         String name = "init";
         String[] ali = {"init", "initialize", "initialize-database"};
-        String desc= "Creates a new database named 'database.db' in the root project directory "+
-            "initializes it with a 'users' and 'tasks' table.";
+        String desc= "Creates a new database named 'database.db' in the root program directory."; 
         return new Command(name, ali, desc);
     }
     
