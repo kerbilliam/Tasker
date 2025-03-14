@@ -38,7 +38,7 @@ public class Commands {
     public static Arguments addTask() {
         String name = "addTask";
         String[] ali = {"add-task", "addTask","at"};
-        String desc = "Adds task to database. "+StrColor.yellow("Use with -n -d -u -s -p. Task name is REQUIRED");
+        String desc = "Adds task to database. "+StrColor.yellow("Use with -n -d -U -s -p. Task name is REQUIRED");
         return new Command(name, ali, desc);
     }
 
@@ -90,12 +90,19 @@ public class Commands {
         String desc = "Login with specified username and password. "+StrColor.yellow("Use with -U --pass. User must exist in database.");
         return new Command(name, ali, desc);
     }
+    
+    private static Arguments logout() {
+        String name = "logout";
+        String[] ali = {"logout", "logoff", "log-out", "log-off"};
+        String desc = "Logout the currently logged-in user.";
+        return new Command(name, ali, desc);
+    }
 
     /**
      * Returns all Commands made in {@code Commands} as a list of {@code Arguments}.
      * @return {@code Arguments[]} of created commands.
      */
     public static Arguments[] getAll() {
-        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser(), login()};
+        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser(), login(), logout()};
     }
 }

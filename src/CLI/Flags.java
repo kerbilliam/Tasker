@@ -65,7 +65,7 @@ public class Flags {
 
     public static Arguments first_name() {
         String name = Database.FIRST_NAME;
-        String[] ali = {"--first-name", "--first", "-f"};
+        String[] ali = {"--first-name", "--first", "-F"};
         String desc = "Set first name for user.";
         return new Flag(name, ali, desc);
     }
@@ -100,14 +100,14 @@ public class Flags {
 
     private static Arguments field() {
         String name = "field";
-        String[] ali = {"--field"};
+        String[] ali = {"--field", "-f"};
         String desc = "Field you want to update. Use with --value";
         return new Flag(name, ali, desc);
     }
 
     private static Arguments value() {
         String name = "value";
-        String[] ali = {"--value"};
+        String[] ali = {"--value", "-v"};
         String desc = "Value you want to update in field. Use with --field";
         return new Flag(name, ali, desc);
     }
