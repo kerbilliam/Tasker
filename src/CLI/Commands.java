@@ -38,7 +38,7 @@ public class Commands {
     public static Arguments addTask() {
         String name = "addTask";
         String[] ali = {"add-task", "addTask","at"};
-        String desc = "Adds task to database. "+StrColor.yellow("Use with -n -d -u -s -p. Task name is REQUIRED");
+        String desc = "Adds task to database. "+StrColor.yellow("Use with -n -d -U -s -p. Task name is REQUIRED");
         return new Command(name, ali, desc);
     }
 
