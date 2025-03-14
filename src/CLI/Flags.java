@@ -34,14 +34,14 @@ public class Flags {
         String desc = "Task Due Date: must be in 'YYYY-MM-DD HH:MM:SS' format";
         return new Flag(name, ali ,desc);
     }
-    
+   /*  
     public static Arguments assignedUsers() {
         String name = Database.ASSIGNED_USER;
         String[] ali = {"--user-assign", "-u"};
         String desc = "Username to assign to task. User must already exists.";
         return new Flag(name, ali, desc);
     }
-    
+     */
     public static Arguments status() {
         String name = Database.STATUS;
         String[] ali = {"--status", "--stat", "-s"};
@@ -117,6 +117,6 @@ public class Flags {
      * @return {@code Arguments[]} of created flags.
      */
     public static Arguments[] getAll() {
-        return new Arguments[]{table(), task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
+        return new Arguments[]{table(), task(), due(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
     }
 }

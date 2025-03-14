@@ -41,7 +41,7 @@ public class Tasker {
 				break;
 
 			case "addTask":
-				Database.addTask(map.get(Database.TASK_NAME), map.get(Database.DUE_DATE), map.get(Database.ASSIGNED_USER), map.get(Database.STATUS), map.get(Database.PRIORITY));
+				Database.addTask(map.get(Database.TASK_NAME), map.get(Database.DUE_DATE), map.get(Database.USERNAME), map.get(Database.STATUS), map.get(Database.PRIORITY));
 				break;
 
 			case "updateTasks":
