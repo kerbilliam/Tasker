@@ -1,7 +1,7 @@
 package DB;
 import CLI.HelpOutput;
 import Colors.StrColor;
-
+import Cipher.Ciphers;
 import java.sql.*;
 import java.util.HashMap;
 
@@ -57,10 +57,10 @@ public class Database {
         connection.close();
 
         addAdmin(DEFUALT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD);
-        System.out.println(StrColor.GREEN + "Database initialized successfully!"+ StrColor.RESET);
+        System.out.println(StrColor.green("Database initialized successfully!"));
     }
 
-    public static void printTable(String table_name, String where, String isThis) {
+    public static void printTable(String table_name, String where, String isThis) throws Exception { //+
         String[] input = {isThis};
         String sql = "SELECT * FROM "+table_name+" WHERE "+where+" = ?;";
         Conn conn = new Conn();
@@ -73,7 +73,7 @@ public class Database {
         } else if (table_name.equals(userTableName)) {
             printFormattedUserTable(resultSet.getResultSet());
         } else {
-            System.out.println("Please choose either '"+taskTableName+"' or '"+userTableName+"'");
+            System.out.println(StrColor.yellow("Please choose either '"+taskTableName+"' or '"+userTableName+"'"));
         }
         
         resultSet.close();
@@ -81,7 +81,7 @@ public class Database {
         conn.close();
     }
 
-    public static void printTable(String table_name) {
+    public static void printTable(String table_name) throws Exception {  //+
         String sql = "SELECT * FROM "+table_name+";";
         Conn conn = new Conn();
         PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
@@ -92,7 +92,7 @@ public class Database {
         } else if (table_name.equals(userTableName)) {
             printFormattedUserTable(resultSet.getResultSet());
         } else {
-            System.out.println("Please choose either '"+taskTableName+"' or '"+userTableName+"'");
+            System.out.println(StrColor.yellow("Please choose either '"+taskTableName+"' or '"+userTableName+"'"));
         }
         
         resultSet.close();
@@ -102,7 +102,7 @@ public class Database {
 
 
 
-    private static void printFormattedTaskTable(ResultSet resultSet) {
+    private static void printFormattedTaskTable(ResultSet resultSet) throws Exception {  //+
         try {
             System.out.println();
             System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
@@ -117,11 +117,11 @@ public class Database {
             System.out.println();
             while (resultSet.next()) {
                 System.out.printf("%-25s%-15s%-15s%-15s%-15s%s%n",
-                        resultSet.getString(TASK_NAME),
-                        resultSet.getDate(DUE_DATE),
-                        resultSet.getString(ASSIGNED_USER),
-                        resultSet.getString(STATUS),
-                        resultSet.getString(PRIORITY),
+                        Ciphers.decrypt(resultSet.getString(TASK_NAME), Ciphers.getKey()), 
+                        resultSet.getDate(DUE_DATE), 
+                        Ciphers.decrypt(resultSet.getString(ASSIGNED_USER), Ciphers.getKey()),
+                        Ciphers.decrypt(resultSet.getString(STATUS), Ciphers.getKey()),
+                        Ciphers.decrypt(resultSet.getString(PRIORITY), Ciphers.getKey()),
                         resultSet.getDate(CREATED)
                 );
             }
@@ -131,7 +131,7 @@ public class Database {
         }
     }
 
-    private static void printFormattedUserTable(ResultSet resultSet) {
+    private static void printFormattedUserTable(ResultSet resultSet) throws Exception {  //+
         try {
             System.out.println();
             System.out.printf("%-15s%-25s%-25s%s%n",
@@ -144,9 +144,9 @@ public class Database {
             System.out.println();
             while (resultSet.next()) {
                 System.out.printf("%-15s%-25s%-25s%s%n",
-                        resultSet.getString(USERNAME),
-                        resultSet.getString(FIRST_NAME),
-                        resultSet.getString(LAST_NAME),
+                        Ciphers.decrypt(resultSet.getString(USERNAME), Ciphers.getKey()), 
+                        Ciphers.decrypt(resultSet.getString(FIRST_NAME), Ciphers.getKey()), 
+                        Ciphers.decrypt(resultSet.getString(LAST_NAME), Ciphers.getKey()), 
                         resultSet.getDate(CREATED)
                 );
             }
@@ -155,11 +155,7 @@ public class Database {
         }
     }
 
-
-    // TASK TABLE METHODS
-    // When updating time, it has to be in ISO 8601 format: 'YYYY-MM-DD HH:MM:SS'
-
-    public static void addTask(String task_name, String due_date, String assigned_users, String status, String priority) {
+    public static void addTask(String task_name, String due_date, String assigned_users, String status, String priority) throws Exception {  //+
         String sql = "INSERT INTO "+taskTableName+" ("+TASK_NAME+", "+DUE_DATE+", "+ASSIGNED_USER+", "+STATUS+", "+PRIORITY+") " +
                 "VALUES (?, ?, ?, ?, ?);";
         String[] values = {task_name, due_date, assigned_users, status, priority};
@@ -170,12 +166,12 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println("Task: " + task_name + " has been successfully added.");
+        System.out.println("Task: " + Ciphers.decrypt(task_name, Ciphers.getKey()) + " has been successfully added.");
     }
 
-    public static void updateTasks(String where, String isThis, String field, String value) {
+    public static void updateTasks(String where, String isThis, String field, String value) { //+
         if (field.equals(ASSIGNED_USER)) {
-            System.out.print("use assignUser to assign users to a task");
+            System.out.print(StrColor.yellow("Use assignUser to assign users to a task"));
             System.exit(1);
         }
         String sql = "UPDATE "+taskTableName+" SET "+field+" = ? WHERE "+where+" = ?;";
@@ -190,7 +186,7 @@ public class Database {
         System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+isThis+"'");
     }
 
-    public static void assignUser(String where, String isThis, String username) {
+    public static void assignUser(String where, String isThis, String username) { //+
         String sql = "UPDATE "+taskTableName+" SET "+ASSIGNED_USER+" = ? WHERE "+where+" = ?";
         String[] values = {username, isThis};
         Conn conn = new Conn();
@@ -203,7 +199,7 @@ public class Database {
        System.out.println(username + " Has been assigned to where " + where + " = " + isThis); 
     }
 
-    public static void deleteTask(String task_name) {
+    public static void deleteTask(String task_name) throws Exception { //+
         String sql = "DELETE FROM "+taskTableName+" WHERE task = ?;";
         String[] values = {task_name};
         Conn conn = new Conn();
@@ -213,12 +209,12 @@ public class Database {
         pstmt.close();
         conn.close();
         
-        System.out.println(task_name + " successfully deleted.");
+        System.out.println(Ciphers.decrypt(task_name, Ciphers.getKey()) + " successfully deleted."); 
     }
 
     // USER TABLE METHODS
 
-    public static void addUser(String username, String password, String first_name, String last_name) {
+    public static void addUser(String username, String password, String first_name, String last_name) throws Exception { //+
         String sql = "INSERT INTO "+userTableName+" ("+USERNAME+", "+PASSWORD+", "+FIRST_NAME+", "+LAST_NAME+") VALUES (?, ?, ?, ?);";
         String[] values = {username, password, first_name, last_name};
         Conn conn = new Conn();
@@ -228,7 +224,7 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println("New user: [" + username + "] created.");
+        System.out.println("New user: [" + Ciphers.decrypt(username, Ciphers.getKey()) + "] created.");
     }
     
     private static void addAdmin(String username, String password) {
@@ -242,7 +238,7 @@ public class Database {
         conn.close();
     }
 
-    public static void updateUser(String username, String field, String value) {
+    public static void updateUser(String username, String field, String value) throws Exception { //+
         String sql = "UPDATE "+userTableName+" SET "+field+" = ? WHERE "+USERNAME+" = ?;";
         String[] values = {value, username};
         Conn conn = new Conn();
@@ -252,10 +248,10 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println(field + " updated to ["+value+"] for user: " + username);
+        System.out.println(field + " updated to ["+value+"] for user: " + Ciphers.decrypt(username, Ciphers.getKey()));
     }
 
-    public static void removeUser(String username) {
+    public static void removeUser(String username) throws Exception { //+
         String sql = "DELETE FROM "+userTableName+" WHERE "+USERNAME+" = ?;";
         String[] values = {username};
         Conn conn = new Conn();
@@ -265,7 +261,7 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println(username + " has been deleted successfully.");
+        System.out.println(StrColor.red(Ciphers.decrypt(username, Ciphers.getKey()) + " has been deleted successfully."));
     }
 
     
@@ -285,7 +281,7 @@ public class Database {
             stmt.close();
             conn.close();
         } catch (SQLException e) {
-            System.err.println("SQL Exception when getting user accounts");
+            System.err.println(StrColor.red("SQL Exception when getting user accounts"));
             System.err.println(e);
             System.exit(1);
         }
@@ -315,6 +311,6 @@ public class Database {
     }
 
     public static void printSQLError(SQLException e) {
-        System.out.println("Error: " + e.getMessage());
+        System.err.println(StrColor.red("Error: " + e.getMessage()));
     }
 }

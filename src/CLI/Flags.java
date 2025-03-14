@@ -1,6 +1,18 @@
 package CLI;
 import DB.Database;
 
+/**
+ * Specified Flags for {@code Parser}. Must include a name, aliases, and description. Example:
+ * <pre>
+ * private static Arguments flag_name() {
+ *      String name = "name";
+ *      String[] ali = {"ali1", "ali2"};
+ *      String desc = "Description for flag_name";
+ *      return new Flag(name, ali, desc);
+ * }
+ * </pre>
+ * Once a flag has been specified, you must add it to the {@code String[]} returned by {@code getAll()}.
+ */
 public class Flags {
     public static Arguments table() {
         String name = "table";
@@ -19,17 +31,17 @@ public class Flags {
     public static Arguments due() {
         String name = Database.DUE_DATE;
         String[] ali = {"--due", "--due-date", "--deadline", "-d"};
-        String desc = "Task Due Date: must be in 'YYYY-MM-DD: HH:MM:SS' format";
+        String desc = "Task Due Date: must be in 'YYYY-MM-DD HH:MM:SS' format";
         return new Flag(name, ali ,desc);
     }
-    
+   /*  
     public static Arguments assignedUsers() {
         String name = Database.ASSIGNED_USER;
         String[] ali = {"--user-assign", "-u"};
         String desc = "Username to assign to task. User must already exists.";
         return new Flag(name, ali, desc);
     }
-    
+     */
     public static Arguments status() {
         String name = Database.STATUS;
         String[] ali = {"--status", "--stat", "-s"};
@@ -81,7 +93,7 @@ public class Flags {
 
     private static Arguments isThis() {
         String name = "isThis";
-        String[] ali = {"--is-this"};
+        String[] ali = {"--is-this", "--is"};
         String desc = "Filtering field value equals this. Use with --where";
         return new Flag(name, ali, desc);
     }
@@ -100,7 +112,11 @@ public class Flags {
         return new Flag(name, ali, desc);
     }
 
+    /**
+     * Returns all Flags made in {@code Flags} as a list of {@code Arguments}
+     * @return {@code Arguments[]} of created flags.
+     */
     public static Arguments[] getAll() {
-        return new Arguments[]{table(), task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
+        return new Arguments[]{table(), task(), due(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
     }
 }
