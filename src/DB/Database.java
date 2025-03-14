@@ -50,7 +50,7 @@ public class Database {
 
         statement.close();
         connection.close();
-        System.out.println(StrColor.GREEN + "Database initialized successfully!"+ StrColor.RESET);
+        System.out.println(StrColor.green("Database initialized successfully!"));
     }
 
     public static void printTable(String table_name, String where, String isThis) throws Exception { //+
@@ -66,7 +66,7 @@ public class Database {
         } else if (table_name.equals(userTableName)) {
             printFormattedUserTable(resultSet.getResultSet());
         } else {
-            System.out.println("Please choose either '"+taskTableName+"' or '"+userTableName+"'");
+            System.out.println(StrColor.yellow("Please choose either '"+taskTableName+"' or '"+userTableName+"'"));
         }
         
         resultSet.close();
@@ -85,7 +85,7 @@ public class Database {
         } else if (table_name.equals(userTableName)) {
             printFormattedUserTable(resultSet.getResultSet());
         } else {
-            System.out.println("Please choose either '"+taskTableName+"' or '"+userTableName+"'");
+            System.out.println(StrColor.yellow("Please choose either '"+taskTableName+"' or '"+userTableName+"'"));
         }
         
         resultSet.close();
@@ -243,7 +243,7 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println(Ciphers.decrypt(username, Ciphers.getKey()) + " has been deleted successfully.");
+        System.out.println(StrColor.red(Ciphers.decrypt(username, Ciphers.getKey()) + " has been deleted successfully."));
     }
 
     
@@ -263,7 +263,7 @@ public class Database {
             stmt.close();
             conn.close();
         } catch (SQLException e) {
-            System.err.println("SQL Exception when getting user accounts");
+            System.err.println(StrColor.red("SQL Exception when getting user accounts"));
             System.err.println(e);
             System.exit(1);
         }
@@ -271,6 +271,6 @@ public class Database {
     }
 
     public static void printSQLError(SQLException e) {
-        System.out.println("Error: " + e.getMessage());
+        System.err.println(StrColor.red("Error: " + e.getMessage()));
     }
 }
