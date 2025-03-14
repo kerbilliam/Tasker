@@ -52,7 +52,7 @@ public class Tasker {
 				break;
 
 			case "assignUser":
-				Database.assignUser(where, isThis, map.get(Database.ASSIGNED_USER));
+				Database.assignUser(where, isThis, map.get(Database.USERNAME));
 				break;
 
 			case "deleteTask":
