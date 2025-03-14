@@ -11,6 +11,8 @@ public class HelpOutput {
     public static void printArguments() {
         Arguments[] commands = Commands.getAll();
         Arguments[] flags = Flags.getAll();
+        byte counter = 0;
+        String color = "";
 
         System.out.println();
         System.out.print(StrColor.GREEN);
@@ -22,22 +24,29 @@ public class HelpOutput {
         printSeparator(70);
         System.out.println();
         for (Arguments command : commands) {
-            System.out.printf("%-50s%s\n", Arrays.toString(command.getAlias()), command.getDescription());
+            if (counter % 2 == 0) {
+                color = "";
+            } else color = "\033[90m";
+            System.out.printf("%s%-50s%s%s\n", color, Arrays.toString(command.getAlias()), command.getDescription(), StrColor.RESET);
+            counter++;
         }
+        
+        counter = 0;
 
         System.out.print(StrColor.YELLOW);
         printSeparator(32);
         System.out.print("FLAGS");
         printSeparator(33);
         System.out.println(StrColor.RESET);
-        // System.out.printf("%-20s%-30s%s\n", "Flag Aliases", "Description", "Used for");
         System.out.printf("%-50s%s\n", "Flag Aliases", "Description");
         printSeparator(70);
         System.out.println();
         for (Arguments flag : flags) {
-            // System.out.printf("%-20s%-30s%s\n", flags[i].getAlias().toString(), flags[i].getDescription(), ((Flag) flags[i]).getAssocCommands().toString());
-            System.out.printf("%-50s%s\n", Arrays.toString(flag.getAlias()), flag.getDescription());
-
+            if (counter % 2 == 0) {
+                color = "";
+            } else color = "\033[90m";
+            System.out.printf("%s%-50s%s%s\n", color, Arrays.toString(flag.getAlias()), flag.getDescription(), StrColor.RESET);
+            counter++;
         }
     }
 
