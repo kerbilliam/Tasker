@@ -29,7 +29,7 @@ public class Database {
     public static final String taskTableName = "tasks";
     public static final String CREATED = "created";
 
-    public static void init(){
+    public static void init() throws Exception{
         Conn connection = new Conn();
         STMT statement = new STMT(connection.getConnection());
         String sql = "CREATE TABLE IF NOT EXISTS "+userTableName+" (" +
@@ -56,7 +56,7 @@ public class Database {
         statement.close();
         connection.close();
 
-        addAdmin(DEFUALT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD);
+        addAdmin(Ciphers.encrypt(DEFUALT_ADMIN_USERNAME, Ciphers.getKey()), Ciphers.encrypt(DEFAULT_ADMIN_PASSWORD, Ciphers.getKey()));
         System.out.println(StrColor.green("Database initialized successfully!"));
     }
 
@@ -169,7 +169,7 @@ public class Database {
         System.out.println("Task: " + Ciphers.decrypt(task_name, Ciphers.getKey()) + " has been successfully added.");
     }
 
-    public static void updateTasks(String where, String isThis, String field, String value) { //+
+    public static void updateTasks(String where, String isThis, String field, String value) throws Exception { //+
         if (field.equals(ASSIGNED_USER)) {
             System.out.print(StrColor.yellow("Use assignUser to assign users to a task"));
             System.exit(1);
@@ -183,10 +183,15 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+isThis+"'");
+        if (field.equals(DUE_DATE) || field.equals(CREATED)) {
+            System.out.println(field + " updated to ["+value+"] for all "+where+" = '"+Ciphers.decrypt(isThis, Ciphers.getKey())+"'");
+        }else{
+            System.out.println(field + " updated to ["+Ciphers.decrypt(value, Ciphers.getKey())+"] for all "+where+" = '"+Ciphers.decrypt(isThis, Ciphers.getKey())+"'");
+
+        }
     }
 
-    public static void assignUser(String where, String isThis, String username) { //+
+    public static void assignUser(String where, String isThis, String username) throws Exception{ //+
         String sql = "UPDATE "+taskTableName+" SET "+ASSIGNED_USER+" = ? WHERE "+where+" = ?";
         String[] values = {username, isThis};
         Conn conn = new Conn();
@@ -196,7 +201,7 @@ public class Database {
         pstmt.close();
         conn.close();
 
-       System.out.println(username + " Has been assigned to where " + where + " = " + isThis); 
+       System.out.println(Ciphers.decrypt(username, Ciphers.getKey()) + " Has been assigned to where " + where + " = " + Ciphers.decrypt(isThis, Ciphers.getKey())); 
     }
 
     public static void deleteTask(String task_name) throws Exception { //+
@@ -248,7 +253,7 @@ public class Database {
         pstmt.close();
         conn.close();
 
-        System.out.println(field + " updated to ["+value+"] for user: " + Ciphers.decrypt(username, Ciphers.getKey()));
+        System.out.println(field + " updated to ["+ Ciphers.decrypt(value, Ciphers.getKey()) +"] for user: " + Ciphers.decrypt(username, Ciphers.getKey()));
     }
 
     public static void removeUser(String username) throws Exception { //+
