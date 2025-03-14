@@ -20,7 +20,7 @@ public class Tasker {
 		String isThis = map.get("isThis");
 		String field = map.get("field");
 		String value = map.get("value");
-		
+
 		switch (map.get("command")) {
 			case "help":
 				HelpOutput.printHelp();
@@ -33,6 +33,10 @@ public class Tasker {
 				System.exit(0);
 		}
 
+		if (TaskerMethods.isRegisteredUser(map.get(Database.USERNAME), map.get(Database.PASSWORD)) == false) {
+			System.out.println("Must log in with valid account");
+			System.exit(0);
+		}
 		switch (map.get("command")) {
 			case "printTable":
 				if (args.length == 3) {
@@ -56,7 +60,7 @@ public class Tasker {
 
 			case "deleteTask":
 				if (map.get(Database.TASK_NAME) == null) {
-					System.out.println(StrColor.RED+ "Error: Must define a task to delete"+StrColor.RESET);
+					System.out.println(StrColor.RED + "Error: Must define a task to delete" + StrColor.RESET);
 					break;
 				}
 				Database.deleteTask(map.get(Database.TASK_NAME));
@@ -67,26 +71,26 @@ public class Tasker {
 				break;
 
 			case "updateUser":
-				if(Database.isAdmin(TaskerMethods.getCurrentUser(),TaskerMethods.loggedOn().get(0)) == true) {
+				if (Database.isAdmin(TaskerMethods.getCurrentUser(), TaskerMethods.loggedOn().get(0)) == true) {
 					Database.updateUser(map.get(Database.USERNAME), field, value);
 
-				}
-				else{
+				} else {
 					System.out.println("You need to be an admin to use this command");
 
 				}
 				break;
 
 			case "removeUser":
-				if(Database.isAdmin(TaskerMethods.getCurrentUser(),TaskerMethods.loggedOn().get(0)) == true) {
-				Database.removeUser(map.get(Database.USERNAME));
-				} else{
-				System.out.println("You need to be an admin to use this command");
+				if (Database.isAdmin(TaskerMethods.getCurrentUser(), TaskerMethods.loggedOn().get(0)) == true) {
+					Database.removeUser(map.get(Database.USERNAME));
+				} else {
+					System.out.println("You need to be an admin to use this command");
 				}
 				break;
 
 			default:
 				HelpOutput.printArguments();
 		}
+
 	}
 }
