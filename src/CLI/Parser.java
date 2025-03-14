@@ -74,21 +74,23 @@ public class Parser {
         for (int i = 1; i < args.length; i++) {
             for (Arguments flag : flags) {
 
-                if (flag.isAlias(args[i])) {
+                if (!flag.isAlias(args[i])) {
+                    System.err.println(StrColor.red("Unknown flag: ") + args[i]);
+                    System.exit(1);
+                }
 
-                    try {
-                        if (flag.getName().equals(Database.DUE_DATE) || flag.getName().equals(Database.CREATED)){
-                            map.put(flag.getName(), args[i + 1]);
-                        } else {
-                            map.put(flag.getName(), Ciphers.encrypt(args[i + 1], Ciphers.getKey()));
-                        }
-
-                        i++;
-
-                    } catch (Exception e) {
-                        System.err.println(StrColor.red("No value given for flag: ") + args[i]);
-                        System.exit(1);
+                try {
+                    if (flag.getName().equals(Database.DUE_DATE) || flag.getName().equals(Database.CREATED)){
+                        map.put(flag.getName(), args[i + 1]);
+                    } else {
+                        map.put(flag.getName(), Ciphers.encrypt(args[i + 1], Ciphers.getKey()));
                     }
+
+                    i++;
+
+                } catch (Exception e) {
+                    System.err.println(StrColor.red("No value given for flag: ") + args[i]);
+                    System.exit(1);
                 }
             }
         }
