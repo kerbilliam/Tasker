@@ -40,7 +40,7 @@ public class Tasker {
 				break;
 
 			case "updateTasks":
-				if (field.equals("due")) {
+				if (field.equals("due") || field.equals("created")) {
 					value = Ciphers.decrypt(value, Ciphers.getKey());
 				}
 				Database.updateTasks(where, isThis, field, value);
