@@ -22,7 +22,7 @@ public class Database {
     
     // Default Admin Account
     public static final String DEFUALT_ADMIN_USERNAME = "admin";
-    public static final String DEFAUTL_ADMIN_PASSWORD = "PasswordDB123";
+    public static final String DEFAULT_ADMIN_PASSWORD = "PasswordDB123";
 
     // Table Constants
     public static final String userTableName = "users";
@@ -56,7 +56,7 @@ public class Database {
         statement.close();
         connection.close();
 
-        addAdmin(DEFUALT_ADMIN_USERNAME, DEFAUTL_ADMIN_PASSWORD);
+        addAdmin(DEFUALT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD);
         System.out.println(StrColor.GREEN + "Database initialized successfully!"+ StrColor.RESET);
     }
 
