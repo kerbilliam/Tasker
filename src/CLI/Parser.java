@@ -86,7 +86,7 @@ public class Parser {
                         i++;
 
                     } catch (Exception e) {
-                        System.err.println("No value given for flag: " + args[i]);
+                        System.err.println(StrColor.red("No value given for flag: ") + args[i]);
                         System.exit(1);
                     }
                 }

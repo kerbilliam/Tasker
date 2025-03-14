@@ -164,7 +164,7 @@ public class Database {
 
     public static void updateTasks(String where, String isThis, String field, String value) { //+
         if (field.equals(ASSIGNED_USER)) {
-            System.out.print("use assignUser to assign users to a task");
+            System.out.print(StrColor.yellow("Use assignUser to assign users to a task"));
             System.exit(1);
         }
         String sql = "UPDATE "+taskTableName+" SET "+field+" = ? WHERE "+where+" = ?;";
