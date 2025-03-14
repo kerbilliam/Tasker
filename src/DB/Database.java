@@ -18,6 +18,11 @@ public class Database {
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
     public static final String PASSWORD = "password";
+    public static final String IS_ADMIN  = "admin";
+    
+    // Default Admin Account
+    public static final String DEFUALT_ADMIN_USERNAME = "admin";
+    public static final String DEFAULT_ADMIN_PASSWORD = "PasswordDB123";
 
     // Table Constants
     public static final String userTableName = "users";
@@ -33,6 +38,7 @@ public class Database {
                 FIRST_NAME+" TEXT, " +
                 LAST_NAME+" TEXT, " +
                 PASSWORD+" TEXT NOT NULL, " +
+                IS_ADMIN+" BIT DEFAULT 0, " +
                 CREATED+" DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ");";
         statement.executeUpdate(sql);
@@ -47,9 +53,10 @@ public class Database {
                 CREATED+" DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ");";
         statement.executeUpdate(sql);
-
         statement.close();
         connection.close();
+
+        addAdmin(DEFUALT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD);
         System.out.println(StrColor.green("Database initialized successfully!"));
     }
 
@@ -219,6 +226,17 @@ public class Database {
 
         System.out.println("New user: [" + Ciphers.decrypt(username, Ciphers.getKey()) + "] created.");
     }
+    
+    private static void addAdmin(String username, String password) {
+        String sql = "INSERT INTO "+userTableName+" ("+USERNAME+", "+PASSWORD+", "+FIRST_NAME+", "+LAST_NAME+", "+IS_ADMIN+") VALUES (?, ?, ?, ?, ?);";
+        String[] values = {username, password, "", "", "1"};
+        Conn conn = new Conn();
+        PSTMT pstmt = new PSTMT(conn.getConnection(), sql);
+        pstmt.setNrunStatement(values);
+
+        pstmt.close();
+        conn.close();
+    }
 
     public static void updateUser(String username, String field, String value) throws Exception { //+
         String sql = "UPDATE "+userTableName+" SET "+field+" = ? WHERE "+USERNAME+" = ?;";
@@ -268,6 +286,28 @@ public class Database {
             System.exit(1);
         }
         return map;
+    }
+    
+    public static Boolean isAdmin(String username, String password) {
+        String sql = "SELECT * FROM "+userTableName+";";
+        Conn conn = new Conn();
+        STMT stmt = new STMT(conn.getConnection());
+        RS resultSet = new RS(stmt.getStatement(), sql);
+        try {
+            while (resultSet.getResultSet().next()) {
+                String name = resultSet.getResultSet().getString(USERNAME);
+                String pass = resultSet.getResultSet().getString(PASSWORD);
+                byte isAdmin = resultSet.getResultSet().getByte(IS_ADMIN);
+                if (name.equals(username) && pass.equals(password) && isAdmin == 1) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception when checking admin privilege");
+            System.err.println(e);
+            System.exit(1);
+        }
+        return false;
     }
 
     public static void printSQLError(SQLException e) {
