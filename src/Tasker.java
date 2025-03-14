@@ -1,11 +1,12 @@
 import CLI.HelpOutput;
 import CLI.Parser;
+import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
 import java.util.HashMap;
 
 public class Tasker {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
 			HelpOutput.printArguments();
 			System.exit(1);
@@ -13,9 +14,9 @@ public class Tasker {
 		Parser psr = new Parser();
 		psr.parse(args);
 		HashMap<String, String> map = psr.getMap();
-		String where = map.get("where");
+		String where = Ciphers.decrypt(map.get("where"), Ciphers.getKey());
 		String isThis = map.get("isThis");
-		String field = map.get("field");
+		String field = Ciphers.decrypt(map.get("field"), Ciphers.getKey());
 		String value = map.get("value");
 		
 		switch (map.get("command")) {
@@ -33,9 +34,9 @@ public class Tasker {
 		switch (map.get("command")) {
 			case "printTable":
 				if (args.length == 3) {
-					Database.printTable(map.get("table"));
+					Database.printTable(Ciphers.decrypt(map.get("table"), Ciphers.getKey()));
 				} else {
-					Database.printTable(map.get("table"), where, isThis);
+					Database.printTable(Ciphers.decrypt(map.get("table"), Ciphers.getKey()), where, isThis);
 				}
 				break;
 
@@ -44,6 +45,9 @@ public class Tasker {
 				break;
 
 			case "updateTasks":
+				if (field.equals("due") || field.equals("created")) {
+					value = Ciphers.decrypt(value, Ciphers.getKey());
+				}
 				Database.updateTasks(where, isThis, field, value);
 				break;
 
