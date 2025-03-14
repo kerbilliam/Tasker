@@ -5,8 +5,6 @@ import Cipher.Ciphers;
 import java.sql.*;
 import java.util.HashMap;
 
-import javax.crypto.Cipher;
-
 public class Database {
     // Task Column Name Constants
     public static final String TASK_NAME = "task";
