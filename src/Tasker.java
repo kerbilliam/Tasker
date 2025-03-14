@@ -98,6 +98,10 @@ public class Tasker {
 			case "removeUser":
 				Database.removeUser(map.get(Database.USERNAME));
 				break;
+			
+			case "logout":
+				// logout current user
+				break;
 
 			default:
 				HelpOutput.printArguments();
