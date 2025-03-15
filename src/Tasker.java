@@ -27,7 +27,7 @@ public class Tasker {
 				Database.init();
 				System.exit(1);
 			case "login":
-				// code to login
+				TaskerMethods.login(map.get(Database.USERNAME), map.get(Database.PASSWORD));
 				System.exit(1);
 		}
 
@@ -101,6 +101,7 @@ public class Tasker {
 			
 			case "logout":
 				// logout current user
+				TaskerMethods.logoff();
 				break;
 
 			default:
