@@ -106,7 +106,7 @@ public class TaskerMethods {
     }
 
     // Log off method (wipes cache)
-    public static void logoff(){
+    public static void wipeCache(){
         System.out.println("Logging out........");
         try {
             // Create PrintStream for the login cache file (overwrite mode)

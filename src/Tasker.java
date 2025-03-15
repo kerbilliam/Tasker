@@ -101,7 +101,7 @@ public class Tasker {
 			
 			case "logout":
 				// logout current user
-				TaskerMethods.logoff();
+				TaskerMethods.wipeCache();
 				break;
 
 			default:
