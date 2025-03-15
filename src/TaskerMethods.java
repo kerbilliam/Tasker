@@ -107,6 +107,7 @@ public class TaskerMethods {
 
     // Log off method (wipes cache)
     public static void logoff(){
+        System.out.println("Logging out........");
         try {
             // Create PrintStream for the login cache file (overwrite mode)
             PrintStream ps = new PrintStream(LOGIN_CACHE_FILE);
@@ -115,8 +116,9 @@ public class TaskerMethods {
             ps.println();
 
             ps.close();
+            System.out.println("Log out was successful.");
         } catch (FileNotFoundException e) {
-            System.out.println("Error writing to information file: " + e.getMessage());
+            System.out.println("Error with logging out " + e.getMessage());
         }
     }
 }
