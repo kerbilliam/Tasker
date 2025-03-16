@@ -100,7 +100,6 @@ public class Tasker {
 				break;
 			
 			case "logout":
-				// logout current user
 				TaskerMethods.wipeCache();
 				break;
 
