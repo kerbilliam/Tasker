@@ -1,11 +1,10 @@
 import DB.Database;
-
-import java.awt.desktop.SystemEventListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Scanner;
+import Cipher.Ciphers;
 
 public class TaskerMethods {
     private static final String LOGIN_CACHE_FILE = "login_cache.txt";
@@ -98,7 +97,11 @@ public class TaskerMethods {
             // Write credentials to LOGIN_CACHE.txt
             writeUserCredentials(username, password);
 
-            System.out.println("Successfully logged in as " + username);
+            try {
+                System.out.println("Successfully logged in as " + Ciphers.decrypt(username, Ciphers.getKey()));
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         } else {
             System.out.println("Error: Invalid username or password");
             System.exit(1);
