@@ -84,7 +84,7 @@ public class Tasker {
 			case "addUser":
 				for (String key : currentUser.keySet()) {
 					if (!Database.isAdmin(key, currentUser.get(key))) {
-						System.out.println(StrColor.red("Must have administrator privileges to add users to database."));
+						System.out.println(StrColor.red("Access Denied: ")+"Must have administrator privileges to add users to database.");
 						System.exit(1);
 					}
 				}
@@ -98,7 +98,7 @@ public class Tasker {
 			case "updateUser":
 
 				if (Authentication.checkAdmin()) {
-					String usernameToUpdate = map.get("USERNAME");
+					String usernameToUpdate = map.get(Database.USERNAME);
 
 					Database.updateUser(map.get(Database.USERNAME), field, value);
 
@@ -107,7 +107,7 @@ public class Tasker {
 					String usernameToUpdate = map.get(Database.USERNAME);
 
 					if (!TaskerMethods.whoIsLogged().equals(usernameToUpdate)) {
-						System.out.println("Error: You can only update your own profile.");
+						System.out.println(StrColor.red("Error: ")+"You can only update your own profile.");
 						break;
 					}
 					Database.updateUser(map.get(Database.USERNAME), field, value);
@@ -118,7 +118,7 @@ public class Tasker {
 			case "removeUser":
 				for (String key : currentUser.keySet()) {
 					if (!Database.isAdmin(key, currentUser.get(key))) {
-						System.out.println(StrColor.red("Must have administrator privileges to add users to database."));
+						System.out.println(StrColor.red("Access Denied: ")+"Must have administrator privileges to add users to database.");
 						System.exit(1);
 					}
 				}
