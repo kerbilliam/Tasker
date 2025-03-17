@@ -3,8 +3,6 @@ import CLI.Parser;
 import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
-
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 
 public class Tasker {
@@ -125,6 +123,10 @@ public class Tasker {
 					}
 				}
 				Database.removeUser(map.get(Database.USERNAME));
+				break;
+			
+			case "whoami":
+				System.out.println(StrColor.green(Ciphers.decrypt(TaskerMethods.whoIsLogged(), Ciphers.getKey())));
 				break;
 			
 			case "logout":
