@@ -33,6 +33,8 @@ public class Tasker {
 				System.exit(1);
 		}
 
+		HashMap<String, String> currentUser = TaskerMethods.getCurrentUser();
+
 		switch (map.get("command")) {
 			case "printTable":
 				if (map.get("table") == null) {
@@ -82,9 +84,11 @@ public class Tasker {
 				break;
 
 			case "addUser":
-				if(Authentication.checkAdmin() == false){
-					System.out.println("must be an administrator to use this function");
-					break;
+				for (String key : currentUser.keySet()) {
+					if (!Database.isAdmin(key, currentUser.get(key))) {
+						System.out.println(StrColor.red("Must have administrator privileges to add users to database."));
+						System.exit(1);
+					}
 				}
 				if (map.get(Database.USERNAME) == null || map.get(Database.PASSWORD) == null) {
 					System.out.println(StrColor.red("Must define a username and password. "+"ex) -U username --pass password"));
@@ -93,10 +97,9 @@ public class Tasker {
 				Database.addUser(map.get(Database.USERNAME), map.get(Database.PASSWORD), map.get(Database.FIRST_NAME), map.get(Database.LAST_NAME));
 				break;
 
-
 			case "updateUser":
 
-				if (Authentication.checkAdmin()) {
+				if (Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged()))) {
 
 					String usernameToUpdate = map.get("USERNAME");
 
@@ -116,9 +119,11 @@ public class Tasker {
 				break;
 
 			case "removeUser":
-				if(Authentication.checkAdmin() == false){
-					System.out.println("must be an administrator to use this function");
-					break;
+				for (String key : currentUser.keySet()) {
+					if (!Database.isAdmin(key, currentUser.get(key))) {
+						System.out.println(StrColor.red("Must have administrator privileges to add users to database."));
+						System.exit(1);
+					}
 				}
 				Database.removeUser(map.get(Database.USERNAME));
 				break;
