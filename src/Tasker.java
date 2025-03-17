@@ -104,7 +104,7 @@ public class Tasker {
 
 					System.out.println("User " + usernameToUpdate + " updated successfully.");
 				} else {
-					String usernameToUpdate = map.get("USERNAME");
+					String usernameToUpdate = map.get(Database.USERNAME);
 
 					if (!TaskerMethods.whoIsLogged().equals(usernameToUpdate)) {
 						System.out.println("Error: You can only update your own profile.");
