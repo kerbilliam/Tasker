@@ -73,7 +73,7 @@ public class Tasker {
 
 			case "deleteTask":
 				if (map.get(Database.TASK_NAME) == null) {
-					System.out.println(StrColor.red("Must define a task to delete. ")+"ex) --name task name");
+					System.out.println(StrColor.red("Must define a task to delete. ")+"ex) --name \"task name\"");
 					break;
 				}
 				Database.deleteTask(map.get(Database.TASK_NAME));
@@ -81,7 +81,7 @@ public class Tasker {
 
 			case "addUser":
 				if (map.get(Database.USERNAME) == null || map.get(Database.PASSWORD) == null) {
-					System.out.println(StrColor.red("Must define a username and password. "+"ex) -U username --pass password"));
+					System.out.println(StrColor.red("Must define a username and password. ")+"ex) -U username --pass password");
 					break;
 				}
 				Database.addUser(map.get(Database.USERNAME), map.get(Database.PASSWORD), map.get(Database.FIRST_NAME), map.get(Database.LAST_NAME));
