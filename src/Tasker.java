@@ -108,7 +108,7 @@ public class Tasker {
 			case "updateUser":
 
 				if (Authentication.checkAdmin()) {
-					String usernameToUpdate = map.get(Database.USERNAME);
+					String usernameToUpdate = Ciphers.decrypt(map.get(Database.USERNAME), Ciphers.getKey());
 
 					Database.updateUser(map.get(Database.USERNAME), field, value);
 
