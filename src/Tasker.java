@@ -32,6 +32,12 @@ public class Tasker {
 		}
 
 		HashMap<String, String> currentUser = TaskerMethods.getCurrentUser();
+		for (String key : currentUser.keySet()) {
+			if (!TaskerMethods.isRegisteredUser(key, currentUser.get(key))) {
+				System.err.println(StrColor.red("Error: ")+"Must be logged to work with the databse.");
+				System.exit(1);
+			}
+		}
 
 		switch (map.get("command")) {
 			case "printTable":
@@ -90,6 +96,10 @@ public class Tasker {
 				}
 				if (map.get(Database.USERNAME) == null || map.get(Database.PASSWORD) == null) {
 					System.out.println(StrColor.red("Must define a username and password. "+"ex) -U username --pass password"));
+					break;
+				}
+				if (!Authentication.uniqueUsername(map.get(Database.USERNAME))) {
+					System.out.println(StrColor.red("Username already taken!")+" Please choose a different username.");
 					break;
 				}
 				Database.addUser(map.get(Database.USERNAME), map.get(Database.PASSWORD), map.get(Database.FIRST_NAME), map.get(Database.LAST_NAME));
