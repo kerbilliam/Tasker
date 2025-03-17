@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Scanner;
+import Cipher.Ciphers;
 
 public class TaskerMethods {
     private static final String LOGIN_CACHE_FILE = "login_cache.txt";
@@ -31,8 +32,9 @@ public class TaskerMethods {
         }
     }
 
-    // current user that is logged in
-    public static String getCurrentUser() {
+    // current user that is logged in (test method)
+    public static String whoIsLogged() {
+        if(readUserCredentials() == null) return "Nobody is currently logged on!";
         return credentials[0];
     }
 
@@ -51,12 +53,10 @@ public class TaskerMethods {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(" ", 2); // Split on first space only
-
                 if (parts.length >= 2) {
                     credentials[0] = parts[0]; // Username
                     credentials[1] = parts[1]; // Password
                 } else {
-                    System.out.println("Invalid credential format in file");
                     scanner.close();
                     return null;
                 }
@@ -78,10 +78,10 @@ public class TaskerMethods {
     }
 
     // return hashmap for who is logged on
-    public static HashMap<String,String> loggedOn(){
+    public static HashMap<String,String> getCurrentUser(){
         HashMap <String, String> hMap = new HashMap<>();
         readUserCredentials();
-         hMap.put(getCurrentUser(), credentials[1]);
+         hMap.put(credentials[0], credentials[1]);
          return hMap;
     }
 
@@ -97,10 +97,31 @@ public class TaskerMethods {
             // Write credentials to LOGIN_CACHE.txt
             writeUserCredentials(username, password);
 
-            System.out.println("Successfully logged in as " + username);
+            try {
+                System.out.println("Successfully logged in as " + Ciphers.decrypt(username, Ciphers.getKey()));
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         } else {
             System.out.println("Error: Invalid username or password");
             System.exit(1);
+        }
+    }
+
+    // Log off method (wipes cache)
+    public static void wipeCache(){
+        System.out.println("Logging out........");
+        try {
+            // Create PrintStream for the login cache file (overwrite mode)
+            PrintStream ps = new PrintStream(LOGIN_CACHE_FILE);
+
+            // Clear file
+            ps.println();
+
+            ps.close();
+            System.out.println("Log out was successful.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error with logging out " + e.getMessage());
         }
     }
 }

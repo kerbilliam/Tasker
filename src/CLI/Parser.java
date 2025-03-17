@@ -1,6 +1,6 @@
 package CLI;
 import java.util.HashMap;
-
+import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
 
@@ -71,21 +71,29 @@ public class Parser {
             System.exit(1);
         }
         
+        int increment_check = 1;
         for (int i = 1; i < args.length; i++) {
             for (Arguments flag : flags) {
 
                 if (flag.isAlias(args[i])) {
-
                     try {
-
-                        map.put(flag.getName(), args[i + 1]);
+                        if (flag.getName().equals(Database.DUE_DATE) || flag.getName().equals(Database.CREATED)){
+                            map.put(flag.getName(), args[i + 1]);
+                        } else {
+                            map.put(flag.getName(), Ciphers.encrypt(args[i + 1], Ciphers.getKey()));
+                        }
                         i++;
-
+                        increment_check = i;
                     } catch (Exception e) {
-                        System.err.println("No value given for flag: " + args[i]);
+                        System.err.println(StrColor.red("No value given for flag: ") + args[i]);
                         System.exit(1);
                     }
+
                 }
+            }
+            if (increment_check != i) {
+                System.err.println(StrColor.red("Unknown flag: ")+args[i]);
+                System.exit(1);
             }
         }
     }

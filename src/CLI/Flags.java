@@ -31,17 +31,17 @@ public class Flags {
     public static Arguments due() {
         String name = Database.DUE_DATE;
         String[] ali = {"--due", "--due-date", "--deadline", "-d"};
-        String desc = "Task Due Date: must be in 'YYYY-MM-DD: HH:MM:SS' format";
+        String desc = "Task Due Date: must be in 'YYYY-MM-DD HH:MM:SS' format";
         return new Flag(name, ali ,desc);
     }
-    
+   /*  
     public static Arguments assignedUsers() {
         String name = Database.ASSIGNED_USER;
         String[] ali = {"--user-assign", "-u"};
         String desc = "Username to assign to task. User must already exists.";
         return new Flag(name, ali, desc);
     }
-    
+     */
     public static Arguments status() {
         String name = Database.STATUS;
         String[] ali = {"--status", "--stat", "-s"};
@@ -65,7 +65,7 @@ public class Flags {
 
     public static Arguments first_name() {
         String name = Database.FIRST_NAME;
-        String[] ali = {"--first-name", "--first", "-f"};
+        String[] ali = {"--first-name", "--first", "-F"};
         String desc = "Set first name for user.";
         return new Flag(name, ali, desc);
     }
@@ -100,14 +100,14 @@ public class Flags {
 
     private static Arguments field() {
         String name = "field";
-        String[] ali = {"--field"};
+        String[] ali = {"--field", "-f"};
         String desc = "Field you want to update. Use with --value";
         return new Flag(name, ali, desc);
     }
 
     private static Arguments value() {
         String name = "value";
-        String[] ali = {"--value"};
+        String[] ali = {"--value", "-v"};
         String desc = "Value you want to update in field. Use with --field";
         return new Flag(name, ali, desc);
     }
@@ -117,6 +117,6 @@ public class Flags {
      * @return {@code Arguments[]} of created flags.
      */
     public static Arguments[] getAll() {
-        return new Arguments[]{table(), task(), due(), assignedUsers(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
+        return new Arguments[]{table(), task(), due(), status(), priority(), username(), first_name(), last_name(), password(), where(), isThis(), field(), value()};
     }
 }
