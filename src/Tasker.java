@@ -82,10 +82,19 @@ public class Tasker {
 				break;
 
 			case "addUser":
+				HashMap<String, String> currentUser = TaskerMethods.getCurrentUser();
+				for (String key : currentUser.keySet()) {
+					if (!Database.isAdmin(key, currentUser.get(key))) {
+						System.out.println(StrColor.red("Must have administrator privileges to add users to database."));
+						System.exit(1);
+					}
+				}
+/* 
 				if(Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged())) == false){
 					System.out.println("must be an administrator to use this function");
 					break;
 				}
+ */
 				if (map.get(Database.USERNAME) == null || map.get(Database.PASSWORD) == null) {
 					System.out.println(StrColor.red("Must define a username and password. "+"ex) -U username --pass password"));
 					break;
