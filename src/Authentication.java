@@ -9,10 +9,8 @@ public class Authentication {
 
     private HashMap<String, String> userDatabase;
 
-    public static boolean isRegisteredUser(String inputUsername, String inputPassword) {
-        return Database.getAccounts().containsKey(inputUsername) && Database.getAccounts().get(inputUsername).equals(inputPassword);
+    public static boolean checkAdmin(){
+        return Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged()));
     }
-
-
 
 }

@@ -82,7 +82,7 @@ public class Tasker {
 				break;
 
 			case "addUser":
-				if(Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged())) == false){
+				if(Authentication.checkAdmin() == false){
 					System.out.println("must be an administrator to use this function");
 					break;
 				}
@@ -93,17 +93,10 @@ public class Tasker {
 				Database.addUser(map.get(Database.USERNAME), map.get(Database.PASSWORD), map.get(Database.FIRST_NAME), map.get(Database.LAST_NAME));
 				break;
 
-			/* case "updateUser":
-				if (field == null || value == null || map.get(Database.USERNAME) == null) {
-					System.out.println(StrColor.red("Must define a Username, field, and value. ")+"ex) -U username --field first_name --value John");
-					break;
-				}
-				Database.updateUser(map.get(Database.USERNAME), field, value);
-				break; */
 
 			case "updateUser":
 
-				if (Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged()))) {
+				if (Authentication.checkAdmin()) {
 
 					String usernameToUpdate = map.get("USERNAME");
 
@@ -123,7 +116,7 @@ public class Tasker {
 				break;
 
 			case "removeUser":
-				if(Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged())) == false){
+				if(Authentication.checkAdmin() == false){
 					System.out.println("must be an administrator to use this function");
 					break;
 				}
