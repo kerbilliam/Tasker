@@ -3,6 +3,8 @@ import CLI.Parser;
 import Cipher.Ciphers;
 import Colors.StrColor;
 import DB.Database;
+
+import javax.xml.crypto.Data;
 import java.util.HashMap;
 
 public class Tasker {
@@ -80,6 +82,10 @@ public class Tasker {
 				break;
 
 			case "addUser":
+				if(Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged())) == false){
+					System.out.println("must be an administrator to use this function");
+					break;
+				}
 				if (map.get(Database.USERNAME) == null || map.get(Database.PASSWORD) == null) {
 					System.out.println(StrColor.red("Must define a username and password. "+"ex) -U username --pass password"));
 					break;
@@ -87,15 +93,40 @@ public class Tasker {
 				Database.addUser(map.get(Database.USERNAME), map.get(Database.PASSWORD), map.get(Database.FIRST_NAME), map.get(Database.LAST_NAME));
 				break;
 
-			case "updateUser":
+			/* case "updateUser":
 				if (field == null || value == null || map.get(Database.USERNAME) == null) {
 					System.out.println(StrColor.red("Must define a Username, field, and value. ")+"ex) -U username --field first_name --value John");
 					break;
 				}
 				Database.updateUser(map.get(Database.USERNAME), field, value);
+				break; */
+
+			case "updateUser":
+
+				if (Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged()))) {
+
+					String usernameToUpdate = map.get("USERNAME");
+
+					Database.updateUser(map.get(Database.USERNAME), field, value);
+
+					System.out.println("User " + usernameToUpdate + " updated successfully.");
+				} else {
+					String usernameToUpdate = map.get("USERNAME");
+
+					if (!TaskerMethods.whoIsLogged().equals(usernameToUpdate)) {
+						System.out.println("Error: You can only update your own profile.");
+						break;
+					}
+					Database.updateUser(map.get(Database.USERNAME), field, value);
+					System.out.println("Your profile was updated successfully.");
+				}
 				break;
 
 			case "removeUser":
+				if(Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged())) == false){
+					System.out.println("must be an administrator to use this function");
+					break;
+				}
 				Database.removeUser(map.get(Database.USERNAME));
 				break;
 			

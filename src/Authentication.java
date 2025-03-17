@@ -9,10 +9,6 @@ public class Authentication {
 
     private HashMap<String, String> userDatabase;
 
-   // public Authentication() {
-    //    this.userDatabase = Database.getAccounts();
-   // }
-
     public static boolean isRegisteredUser(String inputUsername, String inputPassword) {
         return Database.getAccounts().containsKey(inputUsername) && Database.getAccounts().get(inputUsername).equals(inputPassword);
     }
