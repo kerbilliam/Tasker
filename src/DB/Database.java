@@ -304,6 +304,9 @@ public class Database {
                 String pass = resultSet.getResultSet().getString(PASSWORD);
                 byte isAdmin = resultSet.getResultSet().getByte(IS_ADMIN);
                 if (name.equals(username) && pass.equals(password) && isAdmin == 1) {
+                    conn.close();
+                    stmt.close();
+                    resultSet.close();
                     return true;
                 }
             }
