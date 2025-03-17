@@ -99,8 +99,7 @@ public class Tasker {
 
 			case "updateUser":
 
-				if (Database.isAdmin(TaskerMethods.whoIsLogged(), TaskerMethods.getCurrentUser().get(TaskerMethods.whoIsLogged()))) {
-
+				if (Authentication.checkAdmin()) {
 					String usernameToUpdate = map.get("USERNAME");
 
 					Database.updateUser(map.get(Database.USERNAME), field, value);
