@@ -63,6 +63,13 @@ public class Commands {
         return new Command(name, ali, desc);
     }
     
+    private static Arguments whoami() {
+        String name = "whoami";
+        String[] ali = {"whoami", "who-am-i"};
+        String desc = "Display the currently logged on user.";
+        return new Command(name, ali, desc);
+    }
+    
     public static Arguments addUser() {
         String name = "addUser";
         String[] ali = {"add-user", "addUser", "adu"};
@@ -103,6 +110,6 @@ public class Commands {
      * @return {@code Arguments[]} of created commands.
      */
     public static Arguments[] getAll() {
-        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser(), login(), logout()};
+        return new Arguments[]{help(), init(), printTable(), addTask(), updateTasks(), assignUser(), deleteTask(), addUser(), updateUser(), removeUser(), login(), logout(), whoami()};
     }
 }

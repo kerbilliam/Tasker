@@ -31,6 +31,14 @@ public class Tasker {
 				System.exit(1);
 		}
 
+		HashMap<String, String> currentUser = TaskerMethods.getCurrentUser();
+		for (String key : currentUser.keySet()) {
+			if (!TaskerMethods.isRegisteredUser(key, currentUser.get(key))) {
+				System.err.println(StrColor.red("Error: ")+"Must be logged to work with the databse.");
+				System.exit(1);
+			}
+		}
+
 		switch (map.get("command")) {
 			case "printTable":
 				if (map.get("table") == null) {
@@ -80,23 +88,55 @@ public class Tasker {
 				break;
 
 			case "addUser":
+				for (String key : currentUser.keySet()) {
+					if (!Database.isAdmin(key, currentUser.get(key))) {
+						System.out.println(StrColor.red("Access Denied: ")+"Must have administrator privileges to add users to database.");
+						System.exit(1);
+					}
+				}
 				if (map.get(Database.USERNAME) == null || map.get(Database.PASSWORD) == null) {
 					System.out.println(StrColor.red("Must define a username and password. ")+"ex) -U username --pass password");
+					break;
+				}
+				if (!Authentication.uniqueUsername(map.get(Database.USERNAME))) {
+					System.out.println(StrColor.red("Username already taken!")+" Please choose a different username.");
 					break;
 				}
 				Database.addUser(map.get(Database.USERNAME), map.get(Database.PASSWORD), map.get(Database.FIRST_NAME), map.get(Database.LAST_NAME));
 				break;
 
 			case "updateUser":
-				if (field == null || value == null || map.get(Database.USERNAME) == null) {
-					System.out.println(StrColor.red("Must define a Username, field, and value. ")+"ex) -U username --field first_name --value John");
-					break;
+
+				if (Authentication.checkAdmin()) {
+					String usernameToUpdate = map.get(Database.USERNAME);
+
+					Database.updateUser(map.get(Database.USERNAME), field, value);
+
+					System.out.println("User " + usernameToUpdate + " updated successfully.");
+				} else {
+					String usernameToUpdate = map.get(Database.USERNAME);
+
+					if (!TaskerMethods.whoIsLogged().equals(usernameToUpdate)) {
+						System.out.println(StrColor.red("Error: ")+"You can only update your own profile.");
+						break;
+					}
+					Database.updateUser(map.get(Database.USERNAME), field, value);
+					System.out.println("Your profile was updated successfully.");
 				}
-				Database.updateUser(map.get(Database.USERNAME), field, value);
 				break;
 
 			case "removeUser":
+				for (String key : currentUser.keySet()) {
+					if (!Database.isAdmin(key, currentUser.get(key))) {
+						System.out.println(StrColor.red("Access Denied: ")+"Must have administrator privileges to add users to database.");
+						System.exit(1);
+					}
+				}
 				Database.removeUser(map.get(Database.USERNAME));
+				break;
+			
+			case "whoami":
+				System.out.println(StrColor.green(Ciphers.decrypt(TaskerMethods.whoIsLogged(), Ciphers.getKey())));
 				break;
 			
 			case "logout":
