@@ -65,7 +65,7 @@ public class Tasker {
 					System.out.println(StrColor.red("Must define --where --is --field --value. ")+"Ex) --field priority --value Urgent --where task --is \"task name\"");
 					break;
 				}
-				if (field.equals("due") || field.equals("created")) {
+				if (field.equals(Database.DUE_DATE) || field.equals(Database.CREATED)) {
 					value = Ciphers.decrypt(value, Ciphers.getKey());
 				}
 				Database.updateTasks(where, isThis, field, value);
@@ -109,12 +109,20 @@ public class Tasker {
 
 				if (Authentication.checkAdmin()) {
 					String usernameToUpdate = Ciphers.decrypt(map.get(Database.USERNAME), Ciphers.getKey());
+					if (field.equals(Database.IS_ADMIN)) {
+						value = Ciphers.decrypt(value, Ciphers.getKey());
+					}
 
 					Database.updateUser(map.get(Database.USERNAME), field, value);
 
 					System.out.println("User " + usernameToUpdate + " updated successfully.");
 				} else {
 					String usernameToUpdate = map.get(Database.USERNAME);
+					
+					if (field.equals(Database.IS_ADMIN)) {
+						System.out.println(StrColor.red("Access Denied: ")+"This requires administrator privileges.");
+						break;
+					}
 
 					if (!TaskerMethods.whoIsLogged().equals(usernameToUpdate)) {
 						System.out.println(StrColor.red("Error: ")+"You can only update your own profile.");
