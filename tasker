@@ -1,3 +1,2 @@
 #!/bin/bash
-JAVA_PROJECT_DIR="~/MyPrograms/Tasker"
-java -cp "$JAVA_PROJECT_DIR/bin:$JAVA_PROJECT_DIR/lib/*" Tasker "$@"
+java -cp "$TASKER_DIR/bin:$TASKER_DIR/lib/*" Tasker "$@"
