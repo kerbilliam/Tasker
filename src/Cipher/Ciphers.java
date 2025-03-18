@@ -1,3 +1,5 @@
+//reference: https://www.baeldung.com/java-aes-encryption-decryption
+//reference:https://stackoverflow.com/questions/41935207/base64-string-to-byte-in-java
 package Cipher;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
