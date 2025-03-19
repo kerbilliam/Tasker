@@ -1,2 +1,2 @@
 #!/bin/bash
-java -cp "$TASKER_DIR/bin:$TASKER_DIR/lib/*" Tasker "$@"
+java --enable-native-access=ALL-UNNAMED -cp "$TASKER_DIR/bin:$TASKER_DIR/lib/*" Tasker "$@"
