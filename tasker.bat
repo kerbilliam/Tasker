@@ -1,2 +1,2 @@
 @echo off
-java -cp "bin;lib/*" Tasker %*
+java --enable-native-access=ALL-UNNAMED -cp "bin;lib/*" Tasker %*
