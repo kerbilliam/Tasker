@@ -1,6 +1,0 @@
-#!/bin/bash
-set -x
-javac -d bin -cp "lib/*" -sourcepath src src/Tasker.java
-chmod +x tasker
-sudo cp tasker /usr/local/bin/
-echo "export TASKER_DIR='$(pwd)'" >> ~/.bashrc
