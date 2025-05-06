@@ -1,4 +1,4 @@
-#   Database Methods **(Subject to Change)**
+#   Database Methods **(OUTDATED)**
 
 ## Tables and Column Lables for the Database
 
